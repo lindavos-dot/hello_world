@@ -1,7 +1,1 @@
-id,name
-id,Orange
-id,Apple
-id,Pear
-id,Bread
-id,Cheese
-id,marmalade
+id,category,name

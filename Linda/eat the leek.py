@@ -1,18 +1,37 @@
-from http.client import FOUND
+from cgi import print_arguments
 
 
-leek_price = 2 
-print("leek is " + str(leek_price) + " euro per kilo")
+list_of_films = ["Daddy-O", "I passed for White", "The Secret Ways", "Bachelor Flat", "Daimond Head", "Gidget Goed to Rome"]
 
-order_1 = "leek 4"
-found_number_order_1= int(order_1[order_1.find(" "):]) 
-print(found_number_order_1)
+def alphabetical_order(list):
+    alphabetical_list = sorted(list)
+    return alphabetical_list
 
-sum_total = found_number_order_1 * leek_price
-print(sum_total)
+print(sorted(list_of_films, key=str.lower))
 
-broccoli_price = 2.34 #euro
-order_2 = "broccoli 1.6"
-number_2 = float(order_2[order_2.find(" "):])
-total_pricing = float(broccoli_price) * float(number_2)
-print(str(number_2) + " kg broccoli cost " + str(round(total_pricing,2)) + "e")
+
+def won_golden_globe(film_name):
+    won_golden_globe = [
+        "jaws",
+        "e.t. the extra-terrestrial",
+        "Star wars: episode iv - a new hope",
+        "memoirs of a geisha",
+    ]
+    return film_name.lower() in won_golden_globe
+
+print(won_golden_globe("Jaws"))
+print(won_golden_globe("Jeff"))
+
+x = ['Bob', 'Shaun', 'Preeti', 'Jeff']
+for aap in x:
+
+
+    print(f'Hello, {aap}!')
+
+
+for i in range(900,1000,5):
+    print(i)
+
+a_list.append(i)
+
+print(a_list)
