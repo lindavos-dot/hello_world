@@ -33,7 +33,7 @@ def check_document():
 # Stap 2: De header toevoegen aan het document
 def inventory_writer_header():
     check_document()
-    with open('inventory.csv', mode= 'w') as inventory_file:
+    with open('inventory.csv', mode= 'w', newline='') as inventory_file:
         inventory_writer = csv.writer(inventory_file, delimiter=',')
         header = inventory_writer.writerow(['id', 'category', 'name'])
         return header
@@ -42,7 +42,7 @@ def inventory_writer_header():
 # Stap 3: Inventaris toevoegen aan het document
 def inventory_writer():
     check_document()
-    with open('inventory.csv', mode= 'a') as inventory_file:
+    with open('inventory.csv', mode= 'a', newline='') as inventory_file:
         inventory_writer = csv.writer(inventory_file, delimiter=',')
 
         inventory_writer.writerow(['id', 'Fruit', 'Orange'])
@@ -59,10 +59,10 @@ def inventory_writer():
 # Stap 4: De inventaris laten zien
 def inventory():
     with open('inventory.csv', 'r') as csv_file:
-        csv_reader = csv.reader(islice(csv_file, 2, None, 2))
-
+        csv_reader = csv.reader(csv_file)
+        next(csv_file)
         for line in csv_reader:
-            print(line)
+            print(line[1:])
 
 
-# inventory()
+inventory()
