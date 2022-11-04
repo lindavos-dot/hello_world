@@ -57,9 +57,12 @@ def inventory_writer():
 # inventory_writer()   
 
 # Stap 4: De inventaris laten zien
-with open('inventory.csv', 'r') as csv_file:
-    csv_reader = csv.reader(islice(csv_file, 2, None, 2))
+def inventory():
+    with open('inventory.csv', 'r') as csv_file:
+        csv_reader = csv.reader(islice(csv_file, 2, None, 2))
 
-    for line in csv_reader:
-        print(line)
+        for line in csv_reader:
+            print(line)
 
+
+# inventory()
