@@ -38,20 +38,20 @@ def stock_writer_header():
         return header
 
 
-stock_writer_header()
+# stock_writer_header()
 
 # Stap 3: Inventaris toevoegen aan het document
   
-def stock_writer(id, category, name, amount, price, purchase_date, expiration_date):
+def stock_writer(id, category, name, amount, price, expiration_date):
     check_document() 
     
-    with open('stock.csv', mode= 'a', newline='') as stock_file:
+    with open('2_bought.csv', mode= 'a', newline='') as stock_file:
         stock_writer = csv.writer(stock_file, delimiter=',')
-            
+        purchase_date = required_format    
         return stock_writer.writerow([id, category, name, amount, price, purchase_date, expiration_date])
 
 
-# stock_writer('id', 'Fruit', 'Orange', 16, 1,30, '2023-10-15')
+# stock_writer('id', 'Fruit', 'Orange', 16, 1.30, '2023-10-15')    DEZE WERKT
 
 
 # stock_writer with Argparse
@@ -84,3 +84,4 @@ if args.action == 'buy':
             expiration_date = args.expiration_date
 
             return stock_writer.writerow([id, category, name, amount, price, purchase_date, expiration_date])
+
