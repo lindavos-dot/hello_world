@@ -1,0 +1,2 @@
+# In het csv bestand wil ik een inkooplijst maken die gesorteerd is op datum. Zodat het duidelijk is op welke dag, wat is aangekocht
+# De functies die hier staan gaan over het toevoegen van voorraad aan de inkooplijst(csv bestand)
