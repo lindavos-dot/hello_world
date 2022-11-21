@@ -2,11 +2,11 @@
 
 # First step? How do i want to structure data?
 
-# inventory (inventaris)
-# stock (voorraad, met datum?)
-# bought (inkoop met naam, prijs, aantal, houdbaarheidsdatum)
-# sold (verkoop met naam, prijs, aantal, houdbaarheidsdatum of als de houdbaarheidsdatum is vervallen. Het feit dat dit is gebeurt)
-# past_expiration_date (artikelen die over datum zijn gegaan en uit de voorraad lijst worden gehaald, worden hier opgeslagen)
+# inventory (inventaris toevoegen en laten zien)
+# bought (inkoopbestand)
+# sold (verkoopbestand)
+# past_expiration_date (dervingbestand)
+# stock (voorraad bestand, die bijgewerkt wordt door bought, sold, past_expiration_date betanden/functies)
 
 # Beginnen met inventory. Welke producten biedt de supermarkt aan?
 
@@ -17,7 +17,7 @@ from itertools import islice
 
 # Stap 1: Bestaat het csv document? met de os-module?
 def check_document():
-    path = "c:/Users/Linda Vos/Desktop/hello-world/superpy/inventory.csv"
+    path = 'c:/Users/Linda Vos/Desktop/hello-world/superpy/inventory.csv'
     isFile = os.path.isfile(path)
 
     if isFile == True:
@@ -50,7 +50,7 @@ def inventory_writer():
         inventory_writer.writerow(['id', 'Fruit', 'Pear'])
         inventory_writer.writerow(['id', 'Bread and banquet', 'Bread'])
         inventory_writer.writerow(['id', 'Dairy', 'Cheese'])
-        inventory_writer.writerow(['id', 'Toppings', 'marmalade'])
+        inventory_writer.writerow(['id', 'Toppings', 'Marmalade'])
 
 
 # inventory_writer_header()        
@@ -65,4 +65,4 @@ def inventory():
             print(line[1:])
 
 
-inventory()
+# inventory()

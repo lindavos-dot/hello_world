@@ -10,3 +10,15 @@ print ("What a lovely day!")
 print ("one", "two", "three")
 print (1, 2, 3)
 print ("1", "2", "3")
+
+import argparse
+
+# parser = argparse.ArgumentParser()
+
+# parser.add_argument('--name', help= 'Please give a name', required=True)
+
+# args = parser.parse_args()
+
+# print(f'Hello {args.name}')
+
+# PS C:\Users\Linda Vos\Desktop\hello-world\superpy> python stock.py --name Linda

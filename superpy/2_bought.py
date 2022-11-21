@@ -12,7 +12,7 @@ import argparse
 current_time = datetime.now()
 required_format = datetime.strftime(current_time, '%Y-%m-%d')
 
-print(required_format)
+# print(required_format)
 
 # Stap 1 is controleren of het document er is
 def check_document():
@@ -34,21 +34,21 @@ def stock_writer_header():
     check_document()
     with open('2_bought.csv', mode= 'w', newline='') as stock_file:
         stock_writer = csv.writer(stock_file, delimiter=',')
-        header = stock_writer.writerow(['id', 'category', 'name', 'amount', 'price', 'expiration_date'])
+        header = stock_writer.writerow(['id', 'category', 'name', 'amount', 'price', 'purchase_date', 'expiration_date'])
         return header
 
 
-# stock_writer_header()
+stock_writer_header()
 
 # Stap 3: Inventaris toevoegen aan het document
   
-def stock_writer(id, category, name, amount, price, expiration_date):
+def stock_writer(id, category, name, amount, price, purchase_date, expiration_date):
     check_document() 
     
     with open('stock.csv', mode= 'a', newline='') as stock_file:
         stock_writer = csv.writer(stock_file, delimiter=',')
             
-        return stock_writer.writerow([id, category, name, amount, price, expiration_date])
+        return stock_writer.writerow([id, category, name, amount, price, purchase_date, expiration_date])
 
 
 # stock_writer('id', 'Fruit', 'Orange', 16, 1,30, '2023-10-15')
@@ -73,7 +73,14 @@ if args.action == 'buy':
     def stock_writer(id, category, name, amount, price, expiration_date):
         check_document() 
     
-        with open('stock.csv', mode= 'a', newline='') as stock_file:
+        with open('2_bought.csv', mode= 'a', newline='') as stock_file:
             stock_writer = csv.writer(stock_file, delimiter=',')
-            
-            return stock_writer.writerow([id, category, name, amount, price, expiration_date])
+            id = args.id
+            category = args.category
+            name = args.name
+            amount = args.amount
+            price = args.price
+            purchase_date = required_format
+            expiration_date = args.expiration_date
+
+            return stock_writer.writerow([id, category, name, amount, price, purchase_date, expiration_date])
