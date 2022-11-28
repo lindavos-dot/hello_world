@@ -70,7 +70,6 @@ args = parser.parse_args()
 # python 2_bought.py --id id --category Fruit --name Orange --amount 20 --price 1.20 --expiration_date 2022-12-15 --action buy
 
 if args.action == 'buy':
-    def stock_writer(id, category, name, amount, price, expiration_date):
         check_document() 
     
         with open('2_bought.csv', mode= 'a', newline='') as stock_file:
@@ -80,7 +79,6 @@ if args.action == 'buy':
             name = args.name
             amount = args.amount
             price = args.price
-            purchase_date = required_format
             expiration_date = args.expiration_date
 
             return stock_writer.writerow([id, category, name, amount, price, purchase_date, expiration_date])
