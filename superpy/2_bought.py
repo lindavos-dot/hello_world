@@ -20,38 +20,39 @@ def check_document():
     isFile = os.path.isfile(path)
 
     if isFile == True:
-        inventory_file = isFile
+        bought_file = isFile
 
     elif isFile == False:
-        with open('2_bought.csv', mode= 'w') as inventory_file:
-            return inventory_file
+        with open('2_bought.csv', mode= 'w') as bought_file:
+            return bought_file
 
 
 # check_document()
 
 # Stap 2: De header toevoegen aan het document
-def stock_writer_header():
+def bought_writer_header():
     check_document()
-    with open('2_bought.csv', mode= 'w', newline='') as stock_file:
-        stock_writer = csv.writer(stock_file, delimiter=',')
-        header = stock_writer.writerow(['id', 'category', 'name', 'amount', 'price', 'purchase_date', 'expiration_date'])
+    with open('2_bought.csv', mode= 'w', newline='') as file:
+        bought_writer = csv.writer(file, delimiter=',')
+        header = bought_writer.writerow(['id', 'purchase_date', 'category', 'name', 'amount', 'price', 'expiration_date'])
         return header
 
 
-# stock_writer_header()
+# bought_writer_header()
 
 # Stap 3: Inventaris toevoegen aan het document
   
 def stock_writer(id, category, name, amount, price, expiration_date):
     check_document() 
     
-    with open('2_bought.csv', mode= 'a', newline='') as stock_file:
-        stock_writer = csv.writer(stock_file, delimiter=',')
+    with open('2_bought.csv', mode= 'a', newline='') as file:
+        stock_writer = csv.writer(file, delimiter=',')
         purchase_date = required_format    
-        return stock_writer.writerow([id, category, name, amount, price, purchase_date, expiration_date])
+        return stock_writer.writerow([id, purchase_date, category, name, amount, price, expiration_date])
 
 
-# stock_writer('id', 'Fruit', 'Orange', 16, 1.30, '2023-10-15')    DEZE WERKT
+# stock_writer('id', 'Fruit', 'Orange', 16, 1.30, '2023-10-15')
+# stock_writer('id', 'Fruit', 'Apple', 16, 1, '2023-10-15')
 
 
 # stock_writer with Argparse
@@ -67,19 +68,18 @@ parser.add_argument('--action', type=str, help='Enter an action')
 
 args = parser.parse_args()
 
-# python 2_bought.py --id id --category Fruit --name Orange --amount 20 --price 1.20 --expiration_date 2022-12-15 --action buy
+# python 2_bought.py --id id --category Fruit --name Banana --amount 20 --price 1.20 --expiration_date 2022-12-15 --action buy
 
 if args.action == 'buy':
-        check_document() 
-    
-        with open('2_bought.csv', mode= 'a', newline='') as stock_file:
-            stock_writer = csv.writer(stock_file, delimiter=',')
-            id = args.id
-            category = args.category
-            name = args.name
-            amount = args.amount
-            price = args.price
-            expiration_date = args.expiration_date
-
-            return stock_writer.writerow([id, category, name, amount, price, purchase_date, expiration_date])
+    check_document() 
+    with open('2_bought.csv', mode= 'a', newline='') as file:
+        stock_writer = csv.writer(file, delimiter=',')
+        id = args.id
+        purchase_date = required_format
+        category = args.category
+        name = args.name
+        amount = args.amount
+        price = args.price
+        expiration_date = args.expiration_date
+        stock_writer.writelines([id, purchase_date, category, name, amount, price, expiration_date])
 
