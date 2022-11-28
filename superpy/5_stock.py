@@ -51,7 +51,8 @@ def stock_writer(id, category, name, amount, price, expiration_date):
         return stock_writer.writerow([id, category, name, amount, price, expiration_date])
 
 
-# stock_writer('id', 'Fruit', 'Orange', 16, 1,30, '2023-10-15')
+# stock_writer('id', 'Fruit', 'Orange', 16, 1.30, '2023-10-15')
+# stock_writer('id', 'Fruit', 'Apple', 16, 1, '2023-10-15')
 
 
 # stock_writer with Argparse
@@ -78,3 +79,6 @@ if args.action == 'buy':
                     actual_stock = open("stock.csv", mode= 'w')
                     actual_stock.writelines(text)
                     actual_stock.close()
+
+
+# python 5_stock.py --name Apple --amount 2 --price 1.40 --action buy
