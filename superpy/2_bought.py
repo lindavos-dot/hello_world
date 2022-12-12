@@ -1,5 +1,4 @@
 # In het csv bestand wil ik een inkooplijst maken die gesorteerd is op datum. Zodat het duidelijk is op welke dag, wat is aangekocht
-# De functies die hier staan gaan over het toevoegen van voorraad aan de inkooplijst(csv bestand)
 
 from datetime import datetime
 import os
@@ -55,7 +54,8 @@ def stock_writer(id, category, name, amount, price, expiration_date):
 # stock_writer('id', 'Fruit', 'Apple', 16, 1, '2023-10-15')
 
 
-# stock_writer with Argparse
+# stock_writer with Argparse: 'buy' = inkoop. Als er iets wordt ingekocht, moet de inkooplijst.
+# normaal zou er tussen het bijwerken van de inkooplijst en de voorraadlijst een controle op de vrachtbon zitten en daarna de lijsten bijwerken
 parser = argparse.ArgumentParser(description='Enter new stock')
 
 parser.add_argument('--id', type=str, help='Enter id')
@@ -70,6 +70,7 @@ args = parser.parse_args()
 
 # python 2_bought.py --id id --category Fruit --name Banana --amount 20 --price 1.20 --expiration_date 2022-12-15 --action buy
 
+# bijwerken inkooplijst
 if args.action == 'buy':
     check_document() 
     with open('2_bought.csv', mode= 'a', newline='') as file:
@@ -81,5 +82,4 @@ if args.action == 'buy':
         amount = args.amount
         price = args.price
         expiration_date = args.expiration_date
-        stock_writer.writelines([id, purchase_date, category, name, amount, price, expiration_date])
-
+        stock_writer.writerow([id, purchase_date, category, name, amount, price, expiration_date])

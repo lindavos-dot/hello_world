@@ -1,0 +1,4 @@
+id,sale_date,category,name,amount,price,expiration_date
+id,2022-12-12,Fruit,Orange,2,1.3,2023-10-15
+id,2022-12-12,Fruit,Apple,2,1,2023-10-15
+id,2022-12-12,Fruit,Banana,20,1.2,2022-12-15

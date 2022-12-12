@@ -20,11 +20,11 @@ def check_document():
     isFile = os.path.isfile(path)
 
     if isFile == True:
-        inventory_file = isFile
+        stock_file = isFile
 
     elif isFile == False:
-        with open('stock.csv', mode= 'w') as inventory_file:
-            return inventory_file
+        with open('stock.csv', mode= 'w') as stock_file:
+            return stock_file
 
 
 # check_document()
@@ -55,7 +55,7 @@ def stock_writer(id, category, name, amount, price, expiration_date):
 # stock_writer('id', 'Fruit', 'Apple', 16, 1, '2023-10-15')
 
 
-# stock_writer with Argparse
+# stock_writer with Argparse    'buy' is inkoop
 parser = argparse.ArgumentParser(description='Enter new stock')
 
 parser.add_argument('--name', type=str, help='Enter a name')
@@ -72,7 +72,7 @@ if args.action == 'buy':
             for word in row:
                 if word == args.name:
                     current_amount = int(row[3])
-                    new_amount = current_amount - args.amount
+                    new_amount = current_amount + args.amount
                     # print(new_amount)
                     text = open("stock.csv", mode= 'r')
                     text = ''.join([i for i in text]).replace(str(current_amount), str(new_amount))
@@ -82,3 +82,22 @@ if args.action == 'buy':
 
 
 # python 5_stock.py --name Apple --amount 2 --price 1.40 --action buy
+
+# stock_writer with Argparse    'sell' is verkoop
+if args.action == 'sell': 
+    with open('stock.csv', mode= 'r') as file:
+        csv_reader = csv.reader(file)
+        for row in csv_reader:
+            for word in row:
+                if word == args.name:
+                    current_amount = int(row[3])
+                    new_amount = current_amount - args.amount
+                    # print(new_amount)
+                    text = open("stock.csv", mode= 'r')
+                    text = ''.join([i for i in text]).replace(str(current_amount), str(new_amount))
+                    actual_stock = open("stock.csv", mode= 'w')
+                    actual_stock.writelines(text)
+                    actual_stock.close()
+
+
+# python 5_stock.py --name Apple --amount 2 --price 1.40 --action sell
