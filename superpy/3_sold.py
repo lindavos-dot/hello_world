@@ -85,5 +85,3 @@ if args.action == 'sell':
         expiration_date = args.expiration_date
         stock_writer.writerow([id, sale_date, category, name, amount, price, expiration_date])
 
-# bijwerken voorraadlijst (als naam en houdbaarheidsdatum gelijk aan elkaar zijn: dan voorraad bijwerken in de bestaande regel. 
-# Als naam en houdbaarheidsdatum niet gelijk aan elkaar zijn, dan nieuwe regel aanmaken)
