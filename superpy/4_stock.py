@@ -16,14 +16,14 @@ required_format = datetime.strftime(current_time, '%Y-%m-%d')
 
 # Stap 1 is controleren of het document er is
 def check_document():
-    path = 'c:/Users/Linda Vos/Desktop/hello-world/superpy/stock.csv'
+    path = 'c:/Users/Linda Vos/Desktop/hello-world/superpy/4_stock.csv'
     isFile = os.path.isfile(path)
 
     if isFile == True:
         stock_file = isFile
 
     elif isFile == False:
-        with open('stock.csv', mode= 'w') as stock_file:
+        with open('4_stock.csv', mode= 'w') as stock_file:
             return stock_file
 
 
@@ -32,16 +32,39 @@ def check_document():
 # Stap 2: De header toevoegen aan het document
 def stock_writer_header():
     check_document()
-    with open('stock.csv', mode= 'w', newline='') as stock_file:
+    with open('4_stock.csv', mode= 'w', newline='') as stock_file:
         stock_writer = csv.writer(stock_file, delimiter=',')
-        header = stock_writer.writerow(['id', 'category', 'name', 'amount', 'price', 'expiration_date'])
+        header = stock_writer.writerow(['id', 'category', 'name', 'amount', 'expiration_date'])
         return header
 
 
 # stock_writer_header()
 
-# Stap 3: Inventaris toevoegen aan het document
-  
+# Stap 3: Inventaris toevoegen aan het document - inkooplijst uitlezen per dag en toevoegen aan de voorraad lijst
+
+def read_purchase_list():
+    with open("2_bought.csv", mode= 'r') as file:
+        csvreader = csv.reader(file)
+        next(file)
+        
+        with open('4_stock.csv', mode= 'a', newline='') as stock_file:
+            stock_writer = csv.writer(stock_file, delimiter=',')
+                
+            for row in csvreader:
+                lines = row[0], row[2], row[3], row[4], row[6]
+                stock_writer.writerow(lines)
+
+
+# read_purchase_list()
+
+
+
+
+
+
+
+
+
 def stock_writer(id, category, name, amount, price, expiration_date):
     check_document() 
     
