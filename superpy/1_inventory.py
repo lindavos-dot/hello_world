@@ -7,6 +7,7 @@
 # sold (verkoopbestand)
 # past_expiration_date (dervingbestand)
 # stock (voorraad bestand, die bijgewerkt wordt door bought, sold, past_expiration_date betanden/functies)
+# finance (rapportage van omzet en winst)
 
 # Beginnen met inventory. Welke producten biedt de supermarkt aan?
 
