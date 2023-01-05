@@ -40,7 +40,7 @@ def stock_writer_header():
 
 # stock_writer_header()
 
-# Stap 3: Inventaris toevoegen aan het document - inkooplijst uitlezen per dag en toevoegen aan de voorraad lijst
+# Stap 3: Inventaris toevoegen aan het document - inkooplijst uitlezen in zijn geheel bij start van applicatie
 
 def read_purchase_list():
     with open("2_bought.csv", mode= 'r') as file:
@@ -52,75 +52,60 @@ def read_purchase_list():
                 
             for row in csvreader:
                 lines = row[0], row[2], row[3], row[4], row[6]
+                # print(lines)
                 stock_writer.writerow(lines)
 
 
 # read_purchase_list()
 
+# Een nachtrun, waarbij de voorraad wordt toegevoegd aan de hand van wat er vandaag is ingekocht:
+
+def read_purchase_list_today():
+    with open("2_bought.csv", mode= 'r') as file:
+        csvreader = csv.reader(file)
+        next(file)
+        
+        with open('4_stock.csv', mode= 'a', newline='') as stock_file:
+            stock_writer = csv.writer(stock_file, delimiter=',')
+                
+            for row in csvreader:
+                if row[1] == required_format:
+                    lines = row[0], row[2], row[3], row[4], row[6]
+                    # print(lines)
+                    stock_writer.writerow(lines)
 
 
+# read_purchase_list_today()
+
+# Stap 4: Voorraad verwijderen uit de voorraadlijst als er verkoop heeft plaatsgevonden
+
+current_stock = open("4_stock.csv", mode= 'r')
+current_stock = ''.join([i for i in current_stock])
+# print(current_stock)
 
 
+sales_list = open("3_sold.csv", mode= 'r')
+sales_list = ''.join([i for i in sales_list])
+# print(sales_list)
 
-
-
-
-def stock_writer(id, category, name, amount, price, expiration_date):
-    check_document() 
     
-    with open('stock.csv', mode= 'a', newline='') as stock_file:
-        stock_writer = csv.writer(stock_file, delimiter=',')
-            
-        return stock_writer.writerow([id, category, name, amount, price, expiration_date])
+
+def read_sales_list():
+    
+
+        
+        with open('4_stock.csv', mode= 'r', newline='') as stock_file:
+            stock_writer = csv.reader(stock_file, delimiter=',')
+            next(stock_writer)
+                
+            for row in csvreader:
+                lines = row[0], row[2], row[3], row[4], row[6]
+                print(lines)
+
+                for row in stock_writer:
+                    data = row[3]
+                    print(data)
+                # stock_writer.writerow(lines)
 
 
-# stock_writer('id', 'Fruit', 'Orange', 16, 1.30, '2023-10-15')
-# stock_writer('id', 'Fruit', 'Apple', 16, 1, '2023-10-15')
-
-
-# stock_writer with Argparse    'buy' is inkoop
-parser = argparse.ArgumentParser(description='Enter new stock')
-
-parser.add_argument('--name', type=str, help='Enter a name')
-parser.add_argument('--amount', type=int, help='Enter an amount')
-parser.add_argument('--price', type=float or int, help='Enter a price')
-parser.add_argument('--action', type=str, help='Enter an action')
-
-args = parser.parse_args()
-
-if args.action == 'buy': 
-    with open('stock.csv', mode= 'r') as file:
-        csv_reader = csv.reader(file)
-        for row in csv_reader:
-            for word in row:
-                if word == args.name:
-                    current_amount = int(row[3])
-                    new_amount = current_amount + args.amount
-                    # print(new_amount)
-                    text = open("stock.csv", mode= 'r')
-                    text = ''.join([i for i in text]).replace(str(current_amount), str(new_amount))
-                    actual_stock = open("stock.csv", mode= 'w')
-                    actual_stock.writelines(text)
-                    actual_stock.close()
-
-
-# python 5_stock.py --name Apple --amount 2 --price 1.40 --action buy
-
-# stock_writer with Argparse    'sell' is verkoop
-if args.action == 'sell': 
-    with open('stock.csv', mode= 'r') as file:
-        csv_reader = csv.reader(file)
-        for row in csv_reader:
-            for word in row:
-                if word == args.name:
-                    current_amount = int(row[3])
-                    new_amount = current_amount - args.amount
-                    # print(new_amount)
-                    text = open("stock.csv", mode= 'r')
-                    text = ''.join([i for i in text]).replace(str(current_amount), str(new_amount))
-                    actual_stock = open("stock.csv", mode= 'w')
-                    actual_stock.writelines(text)
-                    actual_stock.close()
-
-
-# python 5_stock.py --name Apple --amount 2 --price 1.40 --action sell
+# read_sales_list()
