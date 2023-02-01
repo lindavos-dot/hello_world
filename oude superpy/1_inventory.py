@@ -1,5 +1,3 @@
-
-
 # First step? How do i want to structure data?
 
 # inventory (inventaris toevoegen en laten zien)
