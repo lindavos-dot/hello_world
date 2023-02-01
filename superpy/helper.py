@@ -75,4 +75,4 @@ def delete_line(filename, product):
         writer.writerows(list_of_csv)
 
 
-delete_line('test.csv', 'Apple')
+# delete_line('test.csv', 'Apple')
