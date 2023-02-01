@@ -61,17 +61,15 @@ def append_new_lines(path, id, product, amount, price, expiration_date):
 # DELETING A LINE FROM THE DOCUMENT
 
 def delete_line(filename, product):
-    with open(filename, mode= 'r') as read_obj:
-        csv_reader = csv.reader(read_obj)
+    with open(filename, mode= 'r') as read_file:
+        csv_reader = csv.reader(read_file)
         list_of_csv = list(csv_reader)
 
         for row in list_of_csv:
             for word in row:
                 if word == product:
                     list_of_csv.remove(row)
-        else: 
-            print(f'{product} not found in {filename}')
-    
+                  
     with open(filename, mode= 'w', newline='') as writeFile:
         writer = csv.writer(writeFile)
         writer.writerows(list_of_csv)
