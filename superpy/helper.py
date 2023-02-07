@@ -35,9 +35,10 @@ def check_document(path):
 # check_document('c:/Users/Linda Vos/Desktop/hello-world/superpy//test.csv')  # nakijken of het werkt
 # check_document('c:/Users/Linda Vos/Desktop/hello-world/superpy test2.csv')  # nakijken of het werkt
 
-# check_document('c:/Users/Linda Vos/Desktop/hello-world/superpy/inventory_list.csv')
-# check_document('c:/Users/Linda Vos/Desktop/hello-world/superpy/purchase_list.csv')
-# check_document('c:/Users/Linda Vos/Desktop/hello-world/superpy/sales_list.csv')
+# check_document('c:/Users/Linda Vos/Desktop/hello-world/superpy/inventory.csv')
+# check_document('c:/Users/Linda Vos/Desktop/hello-world/superpy/purchases.csv')
+# check_document('c:/Users/Linda Vos/Desktop/hello-world/superpy/sales.csv')
+# check_document('c:/Users/Linda Vos/Desktop/hello-world/superpy/stock_in_trade.csv')
 
 
 # WRITING A LINE TO THE DOCUMENT
