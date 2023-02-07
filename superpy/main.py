@@ -169,7 +169,7 @@ def current_stock(product):
     print(total_current_stock)
 
 
-current_stock('Apple')
+# current_stock('Apple')
 
 
 
