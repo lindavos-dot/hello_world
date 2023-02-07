@@ -53,10 +53,10 @@ def inventory(filename):
 # voeg regels invetaris toe aan het document (helper.py)
 # append_new_lines('c:/Users/Linda Vos/Desktop/hello-world/superpy/purchases.csv', 'id', 'Apple', 4, 2, '2023-10-19')  # nakijken of het werkt
 # append_new_lines('c:/Users/Linda Vos/Desktop/hello-world/superpy/purchases.csv', 'id', 'Banana', 4, 2, '2023-10-18')  # nakijken of het werkt
-# append_new_lines('c:/Users/Linda Vos/Desktop/hello-world/superpy/purchases.csv', 'id', 'Pear', 4, 2, '2023-10-18')  # nakijken of het werkt
-# append_new_lines('c:/Users/Linda Vos/Desktop/hello-world/superpy/purchases.csv', 'id', 'Mandarine', 4, 2, '2023-10-18')  # nakijken of het werkt
-# append_new_lines('c:/Users/Linda Vos/Desktop/hello-world/superpy/purchases.csv', 'id', 'Kiwi', 4, 2, '2023-10-18')  # nakijken of het werkt
-# append_new_lines('c:/Users/Linda Vos/Desktop/hello-world/superpy/purchases.csv', 'id', 'Apple', 4, 1, '2023-10-18')  # nakijken of het werkt
+#append_new_lines('c:/Users/Linda Vos/Desktop/hello-world/superpy/purchases.csv', 'id', 'Pear', 4, 2, '2023-10-18')  # nakijken of het werkt
+#append_new_lines('c:/Users/Linda Vos/Desktop/hello-world/superpy/purchases.csv', 'id', 'Mandarine', 4, 2, '2023-10-18')  # nakijken of het werkt
+#append_new_lines('c:/Users/Linda Vos/Desktop/hello-world/superpy/purchases.csv', 'id', 'Kiwi', 4, 2, '2023-10-18')  # nakijken of het werkt
+#append_new_lines('c:/Users/Linda Vos/Desktop/hello-world/superpy/purchases.csv', 'id', 'Apple', 4, 1, '2023-10-18')  # nakijken of het werkt
 
 # Voor hoeveel elk product is gekocht en wat de vervaldatum is
 def purchase_information(filename):
@@ -103,10 +103,11 @@ def sales_information(filename):
 # sales_information('sales.csv')
 
 # LATEN ZIEN DAT EEN PRODUCT NIET IS VERKOCHT, MAAR DE HOUDBAARHEIDSDATUM IS VERSTREKEN
-# append_new_lines('c:/Users/Linda Vos/Desktop/hello-world/superpy/purchases.csv', 'id', 'Apple', 4, 2, '2022-10-19')  # toevoegen over datum appels
 
 def expiration_date_expired(filename):
     check_document('c:/Users/Linda Vos/Desktop/hello-world/superpy/expiration_date_expired.csv')
+    check_document('c:/Users/Linda Vos/Desktop/hello-world/superpy/current_stock.csv')
+    
     with open(filename, mode= 'r') as read_file:
         csv_reader = csv.DictReader(read_file)
         list_of_csv = list(csv_reader)
@@ -119,29 +120,75 @@ def expiration_date_expired(filename):
                 list_of_csv.remove(row)
                 expired_products.append(row)
     
+    
     header = ['id','mutation_date','product','amount','price','expiration_date']       
-    with open(filename, mode= 'w', newline= '') as csvfile:
+    with open('current_stock.csv', mode= 'w', newline= '') as csvfile:
         writer = csv.DictWriter(csvfile, fieldnames=header)
-        writer.writeheader()
+        writer.writeheader() 
         
         for data in list_of_csv:
-            writer.writerow(data)
+            writer.writerow(data) 
     
     header = ['id','mutation_date','product','amount','price','expiration_date']   
-    with open('expiration_date_expired.csv', mode= 'a', newline='') as csvfile:
+    with open('expiration_date_expired.csv', mode= 'w', newline='') as csvfile:
         writer = csv.DictWriter(csvfile, fieldnames=header)
-        # writer.writeheader()
+        writer.writeheader() 
         
         for data in expired_products:
             return writer.writerow(data)  
     
    
+# append_new_lines('c:/Users/Linda Vos/Desktop/hello-world/superpy/purchases.csv', 'id', 'Apple', 4, 2, '2022-10-19')  # toevoegen over datum appels
 # expiration_date_expired('purchases.csv')
 
 
 # HOEVEEL VAN ELK TYPE PRODUCT HEEFT DE SUPERMARKT NU OP VOORRAAD?
 # begin met opschonen inkoop bestand door expiration_date_expired(filename)
-# maak een functie die de voorrraad uitleest en deze laat zien 
+
+def current_stock(product):
+    expiration_date_expired('purchases.csv') # als het goed is staat er nu alleen data in de lijst die niet over datum is    
+    
+    with open('current_stock.csv', mode= 'r') as read_file:
+        csv_reader = csv.DictReader(read_file)
+        total_current_amount = 0
+       
+        for row in csv_reader:
+            if row['product'] == product:
+                total_current_amount += int(row['amount'])       
+
+    with open('sales.csv', mode= 'r') as read_file:
+        csv_reader = csv.DictReader(read_file)
+        total_current_sale = 0
+       
+        for row in csv_reader:
+            if row['product'] == product:
+                total_current_sale += int(row['amount'])
+        
+
+    total_current_stock = total_current_amount - total_current_sale
+    print(total_current_stock)
+
+
+current_stock('Apple')
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 # RAPPORTAGE VAN DE OMZET OVER GESPECIFICEERDE TIJDSPERIODEN
