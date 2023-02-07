@@ -76,7 +76,7 @@ def purchase_information(filename):
 # purchase_information('purchases.csv')
 
 
-# VOOR HOEVEEL IS ELK TYPE PRODUCT VERKOCHT? OF ALS HET OVER DATUM IS TOESCHRIJVEN NAAR DERVING.CSV
+# VOOR HOEVEEL IS ELK TYPE PRODUCT VERKOCHT? OF ALS HET OVER DATUM IS TOESCHRIJVEN NAAR DERVING
 # maak een csv bestand, sales en schrijf een header (helper.py)
 # check_document('c:/Users/Linda Vos/Desktop/hello-world/superpy/sales.csv')
 
@@ -88,7 +88,7 @@ def purchase_information(filename):
 # append_new_lines('c:/Users/Linda Vos/Desktop/hello-world/superpy/sales.csv', 'id', 'Kiwi', 2, 4, '2023-10-18')  # nakijken of het werkt
 # append_new_lines('c:/Users/Linda Vos/Desktop/hello-world/superpy/sales.csv', 'id', 'Apple', 2, 3, '2023-10-18')  # nakijken of het werkt
 
-# functie schrijven die laat zien voor hoeveel elk type product is verkocht
+# VOOR HOEVEEL IS ELK TYPE PRODUCT VERKOCHT?
 def sales_information(filename):
     with open(filename, mode= 'r') as csv_file:
         csv_reader = csv.DictReader(csv_file)  
@@ -102,10 +102,46 @@ def sales_information(filename):
 
 # sales_information('sales.csv')
 
-# functie die kan laten zien hoeveel derving er is (over gespecificeerde tijdsperioden??)
+# LATEN ZIEN DAT EEN PRODUCT NIET IS VERKOCHT, MAAR DE HOUDBAARHEIDSDATUM IS VERSTREKEN
+# append_new_lines('c:/Users/Linda Vos/Desktop/hello-world/superpy/purchases.csv', 'id', 'Apple', 4, 2, '2022-10-19')  # toevoegen over datum appels
+
+def expiration_date_expired(filename):
+    check_document('c:/Users/Linda Vos/Desktop/hello-world/superpy/expiration_date_expired.csv')
+    with open(filename, mode= 'r') as read_file:
+        csv_reader = csv.DictReader(read_file)
+        list_of_csv = list(csv_reader)
+        expired_products = []
+        
+        date_today = today()
+        for row in list_of_csv:
+            date = row['expiration_date']
+            if date <= date_today:
+                list_of_csv.remove(row)
+                expired_products.append(row)
+    
+    header = ['id','mutation_date','product','amount','price','expiration_date']       
+    with open(filename, mode= 'w', newline= '') as csvfile:
+        writer = csv.DictWriter(csvfile, fieldnames=header)
+        writer.writeheader()
+        
+        for data in list_of_csv:
+            writer.writerow(data)
+    
+    header = ['id','mutation_date','product','amount','price','expiration_date']   
+    with open('expiration_date_expired.csv', mode= 'a', newline='') as csvfile:
+        writer = csv.DictWriter(csvfile, fieldnames=header)
+        # writer.writeheader()
+        
+        for data in expired_products:
+            return writer.writerow(data)  
+    
+   
+# expiration_date_expired('purchases.csv')
+
 
 # HOEVEEL VAN ELK TYPE PRODUCT HEEFT DE SUPERMARKT NU OP VOORRAAD?
-# maak een functie die de voorrraad uitleest en deze laat zien (als deze ook gebruikt kan worden voor andere opdrachten, dan plaatsen bij helper.py)
+# begin met opschonen inkoop bestand door expiration_date_expired(filename)
+# maak een functie die de voorrraad uitleest en deze laat zien 
 
 
 # RAPPORTAGE VAN DE OMZET OVER GESPECIFICEERDE TIJDSPERIODEN
