@@ -5,7 +5,7 @@ import os
 import csv
 
 
-# Hier staat de code om csv bestanden aan te maken en te bewerken
+# Hier staat de (generieke)code om csv bestanden aan te maken en te bewerken
 
 # WORKING WITH TIME MODULES
 
