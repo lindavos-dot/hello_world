@@ -15,7 +15,7 @@ def today():
     return required_format
 
 
-# print(today())   nakijken of het werkt
+# print(today())   # nakijken of het werkt
 
 # CHECK DOCUMENT and WRITE HEADER
 
@@ -41,7 +41,7 @@ def check_document(path):
 # check_document('c:/Users/Linda Vos/Desktop/hello-world/superpy/stock_in_trade.csv')
 
 
-# WRITING A LINE TO THE DOCUMENT
+# WRITING A LINE TO A DOCUMENT
 
 def append_new_lines(path, id, product, amount, price, expiration_date):
     check_document(path)
@@ -58,6 +58,7 @@ def append_new_lines(path, id, product, amount, price, expiration_date):
 # append_new_lines('c:/Users/Linda Vos/Desktop/hello-world/superpy//test.csv', 'id', 'Mandarine', 4, 2, '2023-10-18')  # nakijken of het werkt
 # append_new_lines('c:/Users/Linda Vos/Desktop/hello-world/superpy//test.csv', 'id', 'Kiwi', 4, 2, '2023-10-18')  # nakijken of het werkt
 # append_new_lines('c:/Users/Linda Vos/Desktop/hello-world/superpy test2.csv', 'id', 'Apple', 4, 2, '2023-10-18')  # nakijken of het werkt
+
 
 # DELETING A LINE FROM THE DOCUMENT
 
