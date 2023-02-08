@@ -17,6 +17,7 @@ def today():
 
 # print(today())   # nakijken of het werkt
 
+
 # CHECK DOCUMENT and WRITE HEADER
 
 def check_document(path):
@@ -35,11 +36,6 @@ def check_document(path):
 # check_document('c:/Users/Linda Vos/Desktop/hello-world/superpy//test.csv')  # nakijken of het werkt
 # check_document('c:/Users/Linda Vos/Desktop/hello-world/superpy test2.csv')  # nakijken of het werkt
 
-# check_document('c:/Users/Linda Vos/Desktop/hello-world/superpy/inventory.csv')
-# check_document('c:/Users/Linda Vos/Desktop/hello-world/superpy/purchases.csv')
-# check_document('c:/Users/Linda Vos/Desktop/hello-world/superpy/sales.csv')
-# check_document('c:/Users/Linda Vos/Desktop/hello-world/superpy/stock_in_trade.csv')
-
 
 # WRITING A LINE TO A DOCUMENT
 
@@ -54,10 +50,6 @@ def append_new_lines(path, id, product, amount, price, expiration_date):
 
 # append_new_lines('c:/Users/Linda Vos/Desktop/hello-world/superpy//test.csv', 'id', 'Apple', 4, 2, '2023-10-19')  # nakijken of het werkt
 # append_new_lines('c:/Users/Linda Vos/Desktop/hello-world/superpy//test.csv', 'id', 'Banana', 4, 2, '2023-10-18')  # nakijken of het werkt
-# append_new_lines('c:/Users/Linda Vos/Desktop/hello-world/superpy//test.csv', 'id', 'Pear', 4, 2, '2023-10-18')  # nakijken of het werkt
-# append_new_lines('c:/Users/Linda Vos/Desktop/hello-world/superpy//test.csv', 'id', 'Mandarine', 4, 2, '2023-10-18')  # nakijken of het werkt
-# append_new_lines('c:/Users/Linda Vos/Desktop/hello-world/superpy//test.csv', 'id', 'Kiwi', 4, 2, '2023-10-18')  # nakijken of het werkt
-# append_new_lines('c:/Users/Linda Vos/Desktop/hello-world/superpy test2.csv', 'id', 'Apple', 4, 2, '2023-10-18')  # nakijken of het werkt
 
 
 # DELETING A LINE FROM THE DOCUMENT
@@ -74,7 +66,48 @@ def delete_line(filename, product):
                   
     with open(filename, mode= 'w', newline='') as writeFile:
         writer = csv.writer(writeFile)
-        writer.writerows(list_of_csv)
+        return writer.writerows(list_of_csv)
 
 
 # delete_line('test.csv', 'Apple')
+
+
+# LATEN ZIEN DAT EEN PRODUCT NIET IS VERKOCHT, MAAR DE HOUDBAARHEIDSDATUM IS VERSTREKEN
+
+def expiration_date_expired():
+    check_document('c:/Users/Linda Vos/Desktop/hello-world/superpy/expiration_date_expired.csv')
+    check_document('c:/Users/Linda Vos/Desktop/hello-world/superpy/current_stock.csv')
+    
+    filename = 'current_stock.csv'
+    with open(filename, mode= 'r') as read_file:
+        csv_reader = csv.DictReader(read_file)
+        list_of_csv = list(csv_reader)
+        expired_products = []
+        
+        date_today = today()
+        for row in list_of_csv:
+            date = row['expiration_date']
+            if date <= date_today:
+                list_of_csv.remove(row)
+                expired_products.append(row)
+    
+    
+    header = ['id','mutation_date','product','amount','price','expiration_date']       
+    with open('current_stock.csv', mode= 'w', newline= '') as csvfile:
+        writer = csv.DictWriter(csvfile, fieldnames=header)
+        writer.writeheader() 
+        
+        for data in list_of_csv:
+            writer.writerow(data) 
+    
+    header = ['id','mutation_date','product','amount','price','expiration_date']   
+    with open('expiration_date_expired.csv', mode= 'w', newline='') as csvfile:
+        writer = csv.DictWriter(csvfile, fieldnames=header)
+        writer.writeheader() 
+        
+        for data in expired_products:
+            return writer.writerow(data)  
+
+
+# append_new_lines('c:/Users/Linda Vos/Desktop/hello-world/superpy/current_stock.csv', 'id', 'Apple', 4, 2, '2022-10-19')  # toevoegen over datum appels
+# expiration_date_expired()
