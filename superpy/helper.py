@@ -101,9 +101,9 @@ def expiration_date_expired():
             writer.writerow(data) 
     
     header = ['id','mutation_date','product','amount','price','expiration_date']   
-    with open('expiration_date_expired.csv', mode= 'w', newline='') as csvfile:
+    with open('expiration_date_expired.csv', mode= 'a', newline='') as csvfile:
         writer = csv.DictWriter(csvfile, fieldnames=header)
-        writer.writeheader() 
+        # writer.writeheader() 
         
         for data in expired_products:
             return writer.writerow(data)  
@@ -111,3 +111,5 @@ def expiration_date_expired():
 
 # append_new_lines('c:/Users/Linda Vos/Desktop/hello-world/superpy/current_stock.csv', 'id', 'Apple', 4, 2, '2022-10-19')  # toevoegen over datum appels
 # expiration_date_expired()
+
+
