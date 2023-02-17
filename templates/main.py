@@ -7,7 +7,7 @@ app = Flask(__name__)
 
 # Desktop\hello-world\templates>
 
-
+@app.route("/")
 @app.route("/base")
 def base(title="Templates - Base"):
     return render_template("base.html", title=title)
