@@ -3,7 +3,9 @@ import argparse
 import csv
 from datetime import date
 from helper import *
-
+from rich.console import Console
+import pandas as pd
+from csv2pdf import convert
 
 # Do not change these lines.
 __winc_id__ = "a2bc36ea784242e4989deb157d527ba0"
@@ -14,10 +16,8 @@ __human_name__ = "superpy"
 
 
 # WELKE PRODUCTEN BIEDT DE SUPERMARKT AAN?
-
-
-def inventory(filename): 
-
+def inventory(filename):  # first additional feature added: rich
+    console = Console()
     with open(filename, mode= 'r') as csv_file:
         csv_reader = csv.DictReader(csv_file)
         list_products = []      
@@ -28,14 +28,23 @@ def inventory(filename):
             if product not in list_products:
                 list_products.append(product)
 
-    print(list_products)
+    console.print(list_products, style='bold red on white')
 
 
 # inventory('inventory.csv')
 
+# second additional feature added: csv2pdf import convert
+def inventory_csv_to_pdf(filename): # we start by removing duplicates using pandas
+    search_in_file = pd.read_csv(filename)
+    search_in_file.drop_duplicates(inplace=True)
+    search_in_file.to_csv(filename, index=False)
+    
+    return convert(filename, 'inventory.pdf') # daarna kunnen we csv2pdf import convert gebruiken
+
+
+# inventory_csv_to_pdf('inventory.csv')
 
 # VOOR HOEVEEL IS ELK TYPE PRODUCT GEKOCHT EN WAT IS DE VERVALDATUM?
-
 def purchase_information(filename):
     with open(filename, mode= 'r') as csv_file:
         csv_reader = csv.DictReader(csv_file)  
@@ -54,7 +63,6 @@ def purchase_information(filename):
 
 
 # VOOR HOEVEEL IS ELK TYPE PRODUCT VERKOCHT? OF ALS HET OVER DATUM IS TOESCHRIJVEN NAAR DERVING.CSV
-
 # VOOR HOEVEEL IS ELK TYPE PRODUCT VERKOCHT?
 def sales_information(filename):
     with open(filename, mode= 'r') as csv_file:
@@ -73,7 +81,6 @@ def sales_information(filename):
 
 # HOEVEEL VAN ELK TYPE PRODUCT HEEFT DE SUPERMARKT NU OP VOORRAAD?
 # ALS ER EEN NIEUW PRODUCT WORDT INGEKOCHT: SCHRIJVEN NAAR INKOOP BESTAND EN VOORRAAD BESTAND
-
 def buy(product, amount, price, expiration_date):
     path = 'c:/Users/Linda Vos/Desktop/hello-world/superpy/current_stock.csv'
     id = 'id'
@@ -102,7 +109,6 @@ def buy(product, amount, price, expiration_date):
     
 
 # ALS ER EEN PRODUCT WORDT VERKOCHT: SCHRIJVEN NAAR VERKOOP BESTAND EN VOORRAAD BESTAND
-
 def sell(path, id, product, amount, price, expiration_date):
     path = 'c:/Users/Linda Vos/Desktop/hello-world/superpy/sales.csv'
     id = 'id'
@@ -131,7 +137,6 @@ def sell(path, id, product, amount, price, expiration_date):
 
 
 # VOORRAAD AANVRAAG VOOR 1 SPECIFIEK PRODUCT
-
 def current_stock(product):
     expiration_date_expired() # als het goed is staat er nu alleen data in de lijst die niet over datum is    
     
@@ -151,7 +156,6 @@ def current_stock(product):
 # current_stock('Pear')
 
 # VOORRAAD AANVRAAG VOOR ALLE PRODUCTEN IN STOCK
-
 def total_in_stock(filename): 
     expiration_date_expired()
     
@@ -182,9 +186,7 @@ def spoiled_products():
 
 # spoiled_products()
 
-
 # RAPPORTAGE VAN DE OMZET OVER GESPECIFICEERDE TIJDSPERIODEN (omzet: verkoopprijs * aantal)
-
 def revenue(start_date, end_date):
     with open('sales.csv', mode= 'r') as csv_file:
         csv_reader = csv.DictReader(csv_file)  
@@ -204,7 +206,6 @@ def revenue(start_date, end_date):
 # revenue('2023-01-01', '2023-02-28')
 
 # RAPPORTAGE VAN DE WINST OVER GESPECIFICEERDE TIJDSPERIODEN (winst in deze situatie: verkoopprijs - inkoopprijs)
-
 def profit(start_date, end_date):
     with open('sales.csv', mode= 'r') as csv_file:
         csv_reader = csv.DictReader(csv_file)  
@@ -235,7 +236,9 @@ def profit(start_date, end_date):
 
 # Superpy command line tool: werken met Parser en subparsers
 
-# WELKE PRODUCTEN BIEDT DE SUPERMARKT AAN? "inventory"
+# WERKEN MET TIJD "today", "advance_time", "backward_time"
+# WELKE PRODUCTEN BIEDT DE SUPERMARKT AAN? "inventory" 
+# WELKE PRODUCTEN BIEDT DE SUPERMARKT AAN? "inventory_csv_to_pdf"
 # VOOR HOEVEEL IS ELK TYPE PRODUCT GEKOCHT EN WAT IS DE VERVALDATUM? "purchases"
 # VOOR HOEVEEL IS ELK TYPE PRODUCT VERKOCHT? "sales"
 # VAN WELKE PRODUCTEN OP VOORRAAD IS DE HOUDBAARHEIDSDATUM VERSTREKEN? "lack"
@@ -248,8 +251,22 @@ def main(command_line=None):
     parser = argparse.ArgumentParser(description='Superpy command line tool for for supermarket data')
     subparsers = parser.add_subparsers(dest='command')
 
+    # subparser "today"
+    get_date_today = subparsers.add_parser('today', help= 'Show today\'s date')
+
+    # subparser "advance_time"
+    get_advance_time = subparsers.add_parser('advance_time', help= 'show today\'s date plus the days you entered')
+    get_advance_time.add_argument('number', type= int, help= 'Please enter the number of days you want to add to today\'s date')
+    
+    # subparser "backward_time"
+    get_backward_time = subparsers.add_parser('backward_time', help= 'show today\'s date minus the days you entered')
+    get_backward_time.add_argument('number', type= int, help= 'Please enter the number of days you want to subtract from today\'s date')
+
     # Subparser "inventory"
-    get_inventory = subparsers.add_parser('inventory', help= 'Shows the inventory of the supermarket')
+    get_inventory = subparsers.add_parser('inventory', help= 'Shows the inventory of the supermarket using rich')
+
+    # Subparser "inventory_csv_to_pdf"
+    get_inventory_pdf = subparsers.add_parser('inventory_csv_to_pdf', help= 'Converts inventory.csv to inventory.pdf')
     
     # Subparser "purchases"
     get_purchases = subparsers.add_parser('purchases', help= 'Shows the purchases of the supermarket')   
@@ -290,9 +307,21 @@ def main(command_line=None):
 
     args = parser.parse_args(command_line)
 
-    if args.command == 'inventory':     # python main.py inventory
-        inventory('inventory.csv')
+    if args.command == 'today':     # python main.py today
+        print(get_today())
     
+    elif args.command == 'advance_time':     # python main.py advance_time 2
+        print(advance_time(args.number))
+
+    elif args.command == 'backward_time':     # python main.py backward_time 2
+        print(backward_time(args.number))
+
+    elif args.command == 'inventory':     # python main.py inventory
+        inventory('inventory.csv')
+
+    elif args.command == 'inventory_csv_to_pdf':     # python main.py inventory_csv_to_pdf
+        inventory_csv_to_pdf('inventory.csv')
+
     elif args.command == 'purchases':       # python main.py purchases
         purchase_information('purchases.csv')
 
@@ -318,7 +347,7 @@ def main(command_line=None):
         profit(args.start_date, args.end_date)
 
     else:
-        print('Command not recognized (choose from \'inventory\', \'purchases\', \'sales\', \'lack\', \'stock\', \'buy\', \'sell\',\'revenue\', \'profit\')')
+        print('Command not recognized (choose from \'today\', \'advance_time\', \'backward_time\', \'inventory\', \'purchases\', \'sales\', \'lack\', \'stock\', \'buy\', \'sell\',\'revenue\', \'profit\')')
 
 
 
