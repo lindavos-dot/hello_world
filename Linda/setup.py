@@ -20,3 +20,14 @@ def data_writer():
 
     for animal in animals:
         Animal.create(name = animal[0], type = animal[1], enclosure = animal[2])
+
+
+def print_animal_names():
+    for animal in Animal.select():
+        print(animal.type)
+
+def print_animal_names_savanne_enclosure():
+    query = Animal.select(Animal, Enclosure).join(Enclosure).where(Enclosure.name == "savanna_enclosure")
+    
+    for animal in query:
+        print(animal.name)

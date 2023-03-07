@@ -72,10 +72,11 @@ def sales_information(filename):
 
 
 # HOEVEEL VAN ELK TYPE PRODUCT HEEFT DE SUPERMARKT NU OP VOORRAAD?
-
 # ALS ER EEN NIEUW PRODUCT WORDT INGEKOCHT: SCHRIJVEN NAAR INKOOP BESTAND EN VOORRAAD BESTAND
 
-def buy(path, id, product, amount, price, expiration_date):
+def buy(product, amount, price, expiration_date):
+    path = 'c:/Users/Linda Vos/Desktop/hello-world/superpy/current_stock.csv'
+    id = 'id'
     check_document(path)    
     
     with open(path, mode= 'r') as file:
@@ -95,21 +96,16 @@ def buy(path, id, product, amount, price, expiration_date):
 
                     append_new_lines('c:/Users/Linda Vos/Desktop/hello-world/superpy/purchases.csv', id, product, amount, price, expiration_date)
         
-        else:
-            append_new_lines(path, id, product, amount, price, expiration_date)
-            append_new_lines('c:/Users/Linda Vos/Desktop/hello-world/superpy/purchases.csv', id, product, amount, price, expiration_date)
+            else:
+                append_new_lines(path, id, product, amount, price, expiration_date)
+                append_new_lines('c:/Users/Linda Vos/Desktop/hello-world/superpy/purchases.csv', id, product, amount, price, expiration_date)
     
-
-# buy('c:/Users/Linda Vos/Desktop/hello-world/superpy/current_stock.csv', 'id', 'Apple', 4, 2, '2023-10-19')
-# buy('c:/Users/Linda Vos/Desktop/hello-world/superpy/current_stock.csv', 'id', 'Apple', 4, 2, '2023-10-18')
-# buy('c:/Users/Linda Vos/Desktop/hello-world/superpy/current_stock.csv', 'id', 'Pear', 4, 2, '2023-10-19')
-
-# buy('c:/Users/Linda Vos/Desktop/hello-world/superpy/current_stock.csv', 'id', 'Apple', 4, 2, '2022-10-19')  # toevoegen over datum appels
-
 
 # ALS ER EEN PRODUCT WORDT VERKOCHT: SCHRIJVEN NAAR VERKOOP BESTAND EN VOORRAAD BESTAND
 
 def sell(path, id, product, amount, price, expiration_date):
+    path = 'c:/Users/Linda Vos/Desktop/hello-world/superpy/sales.csv'
+    id = 'id'
     check_document(path)
     
     with open(path, mode= 'r') as file:
@@ -128,13 +124,11 @@ def sell(path, id, product, amount, price, expiration_date):
                 updated_stock.writelines(text)
                 updated_stock.close()
 
-                append_new_lines('c:/Users/Linda Vos/Desktop/hello-world/superpy/sales.csv', id, product, amount, price, expiration_date)
+                append_new_lines(path, id, product, amount, price, expiration_date)
 
             else:
                 print(f'{product} is sold out')
 
-
-# sell('c:/Users/Linda Vos/Desktop/hello-world/superpy/current_stock.csv', 'id', 'Apple', 1, 2, '2023-10-19')
 
 # VOORRAAD AANVRAAG VOOR 1 SPECIFIEK PRODUCT
 
@@ -256,15 +250,33 @@ def main(command_line=None):
 
     # Subparser "inventory"
     get_inventory = subparsers.add_parser('inventory', help= 'Shows the inventory of the supermarket')
+    
     # Subparser "purchases"
     get_purchases = subparsers.add_parser('purchases', help= 'Shows the purchases of the supermarket')   
+    
     # Subparser "sales"
     get_sales = subparsers.add_parser('sales', help= 'Shows the sales of the supermarket')
+    
     # Subparser "lack"
     get_lack = subparsers.add_parser('lack', help= 'Shows the shrinkage of the supermarket')
+    
     # Subparser "stock"
     get_stock = subparsers.add_parser('stock', help= 'Shows the stock of the supermarket')
     
+    # Subparser "buy"
+    ad_buy = subparsers.add_parser('buy', help= 'add new purchase to current stock file and purchases file')
+    ad_buy.add_argument('product', help= 'Please enter the name of the purchased item')
+    ad_buy.add_argument('amount', help= 'Please enter the amount of the purchased item')
+    ad_buy.add_argument('price', help= 'Please enter the price of the purchased item')
+    ad_buy.add_argument('expiration_date', help= 'Please enter an expiration date in the following format: yyyy-mm-dd')
+
+    # Subparser "sell"
+    ad_sell = subparsers.add_parser('sell', help= 'remove stock from the current stock file and sales file')
+    ad_sell.add_argument('product', help= 'Please enter the name of the sold item')
+    ad_sell.add_argument('amount', help= 'Please enter the amount of the sold item')
+    ad_sell.add_argument('price', help= 'Please enter the price of the sold item')
+    ad_sell.add_argument('expiration_date', help= 'Please enter an expiration date in the following format: yyyy-mm-dd')
+
     # Subparser "revenue"
     get_revenue = subparsers.add_parser('revenue', help= 'Shows the revenue of the supermarket. Please enter dates in the following format: yyyy-mm-dd')
     get_revenue.add_argument('start_date', help= 'Please enter a start date in the following format: yyyy-mm-dd')
@@ -293,6 +305,12 @@ def main(command_line=None):
     elif args.command == 'stock':       # python main.py stock
         total_in_stock('current_stock.csv')
     
+    elif args.command == 'buy':       # python main.py buy 'Plum', 4, 2, '2023-10-19'
+        buy(args.product, args.amount, args.price, args.expiration_date)
+    
+    elif args.command == 'sell':       # python main.py sell 'Apple', 4, 2, '2023-10-19'
+        buy(args.product, args.amount, args.price, args.expiration_date)
+
     elif args.command == 'revenue':       # python main.py revenue 2023-01-01 2023-02-28      
         revenue(args.start_date, args.end_date)
     
@@ -300,7 +318,7 @@ def main(command_line=None):
         profit(args.start_date, args.end_date)
 
     else:
-        print('Command not recognized (choose from \'inventory\', \'purchases\', \'sales\', \'lack\', \'stock\', \'revenue\', \'profit\')')
+        print('Command not recognized (choose from \'inventory\', \'purchases\', \'sales\', \'lack\', \'stock\', \'buy\', \'sell\',\'revenue\', \'profit\')')
 
 
 
