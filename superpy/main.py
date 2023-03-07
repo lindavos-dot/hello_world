@@ -347,7 +347,7 @@ def main(command_line=None):
         profit(args.start_date, args.end_date)
 
     else:
-        print('Command not recognized (choose from \'today\', \'advance_time\', \'backward_time\', \'inventory\', \'purchases\', \'sales\', \'lack\', \'stock\', \'buy\', \'sell\',\'revenue\', \'profit\')')
+        print('Command not recognized (choose from \'today\', \'advance_time\', \'backward_time\', \'inventory\', \'inventory_csv_to_pdf\', \'purchases\', \'sales\', \'lack\', \'stock\', \'buy\', \'sell\',\'revenue\', \'profit\')')
 
 
 
