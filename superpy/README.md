@@ -1,69 +1,113 @@
- # Python Final Assignment: SuperPy
+ # **SuperPy**
  
- *You need to master the following to complete this assignment:*
-*Independently designing logic flow based on a description of what the program should do; Using and debugging Python classes; Writing, running and interpreting tests in Pytest.*
+*This program was created to support supermarkets in providing easy insight into their processes. By using this program, for example, the stock can be requested or it can be shown what the profit is over the requested time period.*
 
-This is your biggest Python assignment so far, so get comfortable! It is supposed to take you a couple days to complete. You are going to build a command-line tool that a supermarket will use to keep track of their inventory.
 
-There are three important modules from the standard library you must use for this:
+# Parts of the program
 
-1. csv -- CSV File Reading and Writing
+This paragraph provides an overview of the components of the program. Explanation about the use can be found in the user manual section. The program contains the following components:
 
-CSV stands for 'comma separated values'. It's the most common import and export format for spreadsheets and databases, used by -- or at least compatible with -- every software package you can think of in that space. It is a great skill to be able to read, manipulate and write these files.
+This program consists three main parts: working with time, inventory management and financial insight.
 
-2. argparse -- Parser for command-line options, arguments and subcommands
+Working with time has three program parts: today, advance_time and backward_time.
 
-Command-line tools are tools you've probably used a lot already. Examples that may be familiar to you are ls to show the contents of a directory and cd to change the working directory. Another common tool is echo to parse and output some input you give it (try echo "hello world").
+Inventory management has eight parts: inventory, inventory_csv_to_pdf, buy, sell, purchases, sales, lack and stock.
 
-There are three command-line fundamentals you should search the web for before you dive into the exercise: stdin, stdout, command-line arguments. The argparse module helps you to write your own command-line tool. Now that you know about command-line arguments, you should be able to see why it's named argparse.
+Financial insight has two program components: profit and revenue.
 
-3. datetime -- Basic date and time types(opens in a new tab)
+# Before using
 
-Dates are notoriously hard to work with in software. The list of things to consider includes timezones, daylight saving time, leap years and of course countless different notation styles. We will standardize on a single source of truth: the date object, and use a string representation following the format: '%Y-%m-%d'. Read the linked documentation to learn how to use these two facts!
+Open a command line tool. First, check whether you have Python installed on your computer. If not, download python. Download and save Superpy to your computer. And download all modules that this program uses: (argparse, csv, datetime, rich, pandas, os and csv2pdf). 
 
-# Superpy
+# User manual
 
-A large supermarket chain has asked you to write a command-line tool that is able to keep track of their inventory: they want to call it SuperPy. The core functionality is about keeping track and producing reports on various kinds of data:
+In the command line tool: go to where you saved Superpy. A command that is a good option to start with is the --help comand. If all goes well you will see the following:
 
-Which products the supermarket offers;
-How many of each type of product the supermarket holds currently;
-How much each product was bought for, and what its expiry date is;
-How much each product was sold for or if it expired, the fact that it did;
-All data must be saved in CSV files. 
+C:\Users\your_name\Desktop\superpy>main.py --help
 
-Your program should have an internal conception of what day it is. Interaction with your program must go through the command-line. 
+usage: main.py [-h] {today,advance_time,backward_time,inventory,inventory_csv_to_pdf,purchases,sales,lack,stock,buy,sell,revenue,profit} ...
 
-# Code
+Superpy command line tool for supermarket data
 
-Be creative with your implementation! We intentionally keep the specification open to encourage you to be creative with this project. However, to obtain a passing grade, you will at least need to satisfy the following requirements:
+positional arguments:
+  {today,advance_time,backward_time,inventory,inventory_csv_to_pdf,purchases,sales,lack,stock,buy,sell,revenue,profit}
+-    today               Show today's date
+-    advance_time        show today's date plus the days you entered
+-    backward_time       show today's date minus the days you entered
+-    inventory           Shows the inventory of the supermarket using rich
+-    inventory_csv_to_pdf
+                        Converts inventory.csv to inventory.pdf
+-    purchases           Shows the purchases of the supermarket
+-    sales               Shows the sales of the supermarket
+-    lack                Shows the shrinkage of the supermarket
+-    stock               Shows the stock of the supermarket
+-    buy                 add new purchase to current stock file and purchases file
+-    sell                remove stock from the current stock file and sales file
+-    revenue             Shows the revenue of the supermarket. Please enter dates in the following format: yyyy-mm-dd
+-    profit              Shows the profit of the supermarket. Please enter dates in the following format: yyyy-mm-dd
 
-Well-structured and documented code, including:
-- Clear and effective variable and function names;
-- Use of comments where the code does not speak for itself;
-- Clear and effective separation of code into separate functions and possibly files.
-- Use of modules to the extent that it shows you were able to independently read and understand the documentation, and apply the techniques within:
-csv, argparse, datetime, including in particular the date object, strftime
-and strptime functions and datetime arithmetic using timedelta.
+options:
+  -h, --help            show this help message and exit
 
-- Use of external text files (CSV) to read and write data.
-- A well-structured and user friendly command-line interface with clear descriptions of each argument in the --help section.
+## working with time
+The command "today" shows today's date. "Today" does not take positional arguments.
 
-A text file containing a usage guide aimed with peers as the target audience. The usage guide should include plenty of examples.
+superpy>main.py today
 
-# The application must support:
+The command "advance_time" shows today's date plus the days you entered. It take one positional argument: an integer. For example if you want to add two days to today:
 
-Setting and advancing the date that the application perceives as 'today';
-Recording the buying and selling of products on certain dates;
-Reporting revenue and profit over specified time periods;
-Exporting selections of data to CSV files;
-Two other additional non-trivial features of your choice, for example:
-The use of an external module Rich(opens in a new tab) to improve the application.
-The ability to import/export reports from/to formats other than CSV (in addition to CSV)
-The ability to visualize some statistics using Matplotlib(opens in a new tab)
-Another feature that you thought of.
-Report
+superpy>main.py advance_time 2
 
-Please include a short, 300-word report that highlights three technical elements of your implementation that you find notable, explain what problem they solve and why you chose to implement it in this way. Include this in your repository as a report.md file.
+The command "backward_time" shows today's date minus the days you entered. It take one positional argument: an integer. For example, if you want to subtract two days from today:
 
-You may use Markdown for your report, but it is not required.
-To assist your explanation you may use code snippets.
+superpy>main.py backward_time 2
+
+## Inventory management
+
+The command "inventory" Shows the inventory of the supermarket using rich. "Today" does not take positional arguments.
+
+superpy>main.py inventory
+
+The command "inventory_csv_to_pdf" Converts inventory.csv to inventory.pdf. "Today" does not take positional arguments.
+
+superpy>main.py inventory_csv_to_pdf
+
+The command "purchases" Shows the purchases of the supermarket. "purchases" does not take positional arguments.
+
+superpy>main.py purchases
+
+The command "sales" Shows the sales of the supermarket. "sales" does not take positional arguments.
+
+superpy>main.py sales
+
+The command "lack" Shows the shrinkage of the supermarket. "lack" does not take positional arguments.
+
+superpy>main.py lack
+
+The command "stock" Shows the stock of the supermarket. "stock" does not take positional arguments.
+
+superpy>main.py stock
+
+The command "buy" add new purchase to current stock file and purchases file. It takes four positional arguments: a string, integer, integer, string. So for example:
+
+superpy>main.py buy 'Plum', 4, 2, '2023-10-19'
+
+The command "sell" remove stock from the current stock file and sales file. It takes four positional arguments: a string, integer, integer, string. So for example:
+
+superpy>main.py sell 'Apple', 4, 2, '2023-10-19'
+
+## financial insight
+
+The command "revenue" shows the revenue of the supermarket. It takes two positional arguments: a string and a string. So for example: 
+Please notice, dates should be entered in the following format: yyyy-mm-dd
+
+superpy>main.py revenue 2023-01-01 2023-02-28
+
+The command "profit" shows the profit of the supermarket. It takes two positional arguments: a string and a string. So for example: 
+Please notice, dates should be entered in the following format: yyyy-mm-dd
+
+superpy>main.py profit 2023-01-01 2023-02-28
+
+# In conclusion
+
+The maker of Superpy hopes that this tool will make working in the supermarket a lot easier.
