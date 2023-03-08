@@ -96,7 +96,7 @@ The command "sell" remove stock from the current stock file and sales file. It t
 
 superpy>main.py sell 'Apple', 4, 2, '2023-10-19'
 
-## financial insight
+## Financial insight
 
 The command "revenue" shows the revenue of the supermarket. It takes two positional arguments: a string and a string. So for example: 
 Please notice, dates should be entered in the following format: yyyy-mm-dd
