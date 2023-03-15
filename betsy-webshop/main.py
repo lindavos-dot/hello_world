@@ -23,8 +23,6 @@ def search(term): # Search for products based on a term. The search should targe
     return search_results
 
 
-# Bonus: Finally the search should account for spelling mistakes made by users and return products even if a spelling error is present. MOET NOG !!!
-
 # print(search('jumper')) # testen tags
 # print(search('wool')) # testen description
 # print(search('sweater')) # testen product naam
@@ -61,7 +59,12 @@ def list_products_per_tag(tag_id): # View all products for a given tag.
 
 
 def add_product_to_catalog(product_name, product_description, product_price, product_quantity, user_id): # Add a product to a user.
-    add_product = Product.create(productname = product_name, description = product_description, price = product_price, quantity = product_quantity, owner = user_id)
+    add_product = Product.create(
+        productname = product_name, 
+        description = product_description, 
+        price = product_price, quantity = product_quantity, 
+        owner = user_id
+        )
     return add_product
 
 
