@@ -36,7 +36,7 @@ class Tag(BaseModel):
 
 
 class Product(BaseModel): # The products must have a name, a description, a price per unit, and a quantity describing the amount in stock.
-    # id = AutoField()
+    # id = AutoField() # Additionally the products should be indexed so that the time spent on querying them is minimized.
     productname = CharField()
     description = TextField()
     price = DecimalField(max_digits=6, decimal_places=2, auto_round=True) # The price should be stored in a safe way; rounding errors should be impossible.
@@ -88,5 +88,4 @@ def populate_test_database(): # Add a populate_test_database function that fills
     for purchase in purchases:
         TrackTransaction.create(buyer = purchase[0], product = purchase[1], quantity = purchase[2])
     
-
 
