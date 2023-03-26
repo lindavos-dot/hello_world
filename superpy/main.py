@@ -82,31 +82,48 @@ def sales_information(filename):
 # HOEVEEL VAN ELK TYPE PRODUCT HEEFT DE SUPERMARKT NU OP VOORRAAD?
 # ALS ER EEN NIEUW PRODUCT WORDT INGEKOCHT: SCHRIJVEN NAAR INKOOP BESTAND EN VOORRAAD BESTAND
 def buy(product, amount, price, expiration_date):
+       
     path = 'c:/Users/Linda Vos/Desktop/hello-world/superpy/current_stock.csv'
     id = 'id'
     check_document(path)    
     
+    append_new_lines('c:/Users/Linda Vos/Desktop/hello-world/superpy/purchases.csv', id, product, amount, price, expiration_date)
+
     with open(path, mode= 'r') as file:
         csv_reader = csv.DictReader(file)
         
-        for row in csv_reader: 
-            
+        old_row = {}
+        new_row = {}
+
+        for row in csv_reader:
             if row['product'] == product and row['expiration_date'] == expiration_date:
-                    current_amount = float(row['amount'])
-                    new_amount = current_amount + amount
+                               
+                old_row = row
+                new_row = row
 
-                    text = open(path, mode= 'r')
-                    text = ''.join([word for word in text]).replace(str(current_amount), str(new_amount))
+                delete_line(path, old_row['product'])
+                current_amount = new_row['amount']               
+                new_amount = int(current_amount) + int(amount)
+                new_row['amount'] = new_amount
                 
-                    updated_stock = open(path, mode= 'w')
-                    updated_stock.writelines(text)
+                append_new_lines(path, new_row['id'], new_row['product'], new_row['amount'], new_row['price'], new_row['expiration_date'])
 
-                    append_new_lines('c:/Users/Linda Vos/Desktop/hello-world/superpy/purchases.csv', id, product, amount, price, expiration_date)
-        
-            else:
+        else:
+            if row['product'] != product:
                 append_new_lines(path, id, product, amount, price, expiration_date)
-                append_new_lines('c:/Users/Linda Vos/Desktop/hello-world/superpy/purchases.csv', id, product, amount, price, expiration_date)
-    
+
+# buy('Koek', 1, 2, '2023-10-19')
+# buy('Plantje', 2, 2, '2023-10-18')
+
+
+
+
+
+
+
+
+
+
 
 # ALS ER EEN PRODUCT WORDT VERKOCHT: SCHRIJVEN NAAR VERKOOP BESTAND EN VOORRAAD BESTAND
 def sell(path, id, product, amount, price, expiration_date):
@@ -121,7 +138,7 @@ def sell(path, id, product, amount, price, expiration_date):
             
             if row['product'] == product and row['expiration_date'] == expiration_date:
                 current_amount = float(row['amount'])
-                new_amount = current_amount - amount
+                new_amount = current_amount - float(amount)
 
                 text = open(path, mode= 'r')
                 text = ''.join([word for word in text]).replace(str(current_amount), str(new_amount))
@@ -340,7 +357,7 @@ def main(command_line=None):
         buy(args.product, args.amount, args.price, args.expiration_date)
     
     elif args.command == 'sell':       # python main.py sell 'Apple', 4, 2, '2023-10-19'
-        buy(args.product, args.amount, args.price, args.expiration_date)
+        sell(args.product, args.amount, args.price, args.expiration_date)
 
     elif args.command == 'revenue':       # python main.py revenue 2023-01-01 2023-02-28      
         revenue(args.start_date, args.end_date)

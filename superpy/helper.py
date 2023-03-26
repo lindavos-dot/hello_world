@@ -55,11 +55,11 @@ def append_new_lines(path, id, product, amount, price, expiration_date):
     with open(path, mode= 'a', newline='') as file:
         writer = csv.writer(file, delimiter=',')
         mutation_date = get_today()
-        return writer.writerow([id, mutation_date, product, amount, price, expiration_date])
+        writer.writerow([id, mutation_date, product, amount, price, expiration_date])
 
 
-# append_new_lines('c:/Users/Linda Vos/Desktop/hello-world/superpy//test.csv', 'id', 'Apple', 4, 2, '2023-10-19')  # nakijken of het werkt
-# append_new_lines('c:/Users/Linda Vos/Desktop/hello-world/superpy//test.csv', 'id', 'Banana', 4, 2, '2023-10-18')  # nakijken of het werkt
+# append_new_lines('c:/Users/Linda Vos/Desktop/hello-world/superpy/current_stock.csv', 'id', 'Plum', 4, 2, '2023-10-19')  # nakijken of het werkt
+# append_new_lines('c:/Users/Linda Vos/Desktop/hello-world/superpy/current_stock.csv', 'id', 'Apple', 4, 2, '2023-10-18')  # nakijken of het werkt
 
 
 # DELETING A LINE FROM THE DOCUMENT
@@ -78,8 +78,8 @@ def delete_line(filename, product):
         return writer.writerows(list_of_csv)
 
 
-# delete_line('test.csv', 'Apple')
-
+# delete_line('current_stock.csv', 'Plum')
+# delete_line('current_stock.csv', 'Banana')
 
 # LATEN ZIEN DAT EEN PRODUCT NIET IS VERKOCHT, MAAR DE HOUDBAARHEIDSDATUM IS VERSTREKEN
 def expiration_date_expired():
