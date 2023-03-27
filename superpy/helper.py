@@ -5,31 +5,6 @@ import csv
 
 # Hier staat de (generieke)code om csv bestanden aan te maken en te bewerken
 
-# WORKING WITH TIME MODULES
-def get_today():
-    return datetime.date.today()
-
-
-#print(get_today())
-
-def advance_time(number):
-    today = get_today()
-    days = datetime.timedelta(days= number)
-    return today + days
-
-
-#print(advance_time(2))
-
-
-def backward_time(number):
-    today = get_today()
-    days = datetime.timedelta(days=number)
-    return today - days
-
-
-#print(backward_time(2))
-
-
 # CHECK DOCUMENT and WRITE HEADER
 def check_document(path):
     check_file = os.path.isfile(os.path.join(path))
@@ -46,6 +21,52 @@ def check_document(path):
 
 # check_document('c:/Users/Linda Vos/Desktop/hello-world/superpy//test.csv')  # nakijken of het werkt
 # check_document('c:/Users/Linda Vos/Desktop/hello-world/superpy test2.csv')  # nakijken of het werkt
+
+
+# WORKING WITH TIME MODULES
+
+def reset_today(): # datum terugzetten naar kalender datum
+    today = datetime.date.today()
+    with open('time.csv', mode= 'w') as file:
+        file.write(str(today))
+
+
+# reset_today()
+
+def get_today():  # uitlezen welke datum is opgeslagen 
+    with open('time.csv', mode= 'r') as file:
+        reader = csv.reader(file)
+        for date in reader:
+            return date[0]
+
+
+# print(get_today())
+
+def advance_time(number): # datum vooruit zetten
+    
+    today = datetime.date.today() # uitgangspunt is kalenderdatum in plaats van interne datum
+    days = datetime.timedelta(days= number)
+    set_date = today + days
+
+    with open('time.csv', mode= 'w') as file:
+        file.write(str(set_date))
+
+
+# advance_time(2)
+# print(get_today())
+
+def backward_time(number): # datum achteruit zetten
+
+    today = datetime.date.today() # uitgangspunt is kalenderdatum in plaats van interne datum
+    days = datetime.timedelta(days=number)
+    set_date = today - days
+
+    with open('time.csv', mode= 'w') as file:
+        file.write(str(set_date))
+
+
+# print(backward_time(2))
+# print(get_today())
 
 
 # WRITING A LINE TO A DOCUMENT
