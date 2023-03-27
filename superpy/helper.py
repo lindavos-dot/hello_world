@@ -43,9 +43,10 @@ def get_today():  # uitlezen welke datum is opgeslagen
 
 # print(get_today())
 
+
 def advance_time(number): # datum vooruit zetten
     
-    today = datetime.date.today() # uitgangspunt is kalenderdatum in plaats van interne datum
+    today = datetime.date.today() 
     days = datetime.timedelta(days= number)
     set_date = today + days
 
@@ -56,9 +57,10 @@ def advance_time(number): # datum vooruit zetten
 # advance_time(2)
 # print(get_today())
 
+
 def backward_time(number): # datum achteruit zetten
 
-    today = datetime.date.today() # uitgangspunt is kalenderdatum in plaats van interne datum
+    today = datetime.date.today() 
     days = datetime.timedelta(days=number)
     set_date = today - days
 

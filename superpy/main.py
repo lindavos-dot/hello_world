@@ -214,12 +214,13 @@ def revenue(start_date, end_date):
                 price = float(row['price'])
                 amount = float(row['amount'])
                 total_revenue += price * amount
-                print(total_revenue)
-            else:
-                print('please check the start date and end date, required format is: yyyy-mm-dd')
+                
+                # csv file met revenue over tijdsperiode in naam van csv file:
+                with open(f'revenue {start_date} - {end_date}.csv', mode= 'w') as file:
+                    file.write(str(total_revenue))
     
 
-# revenue('2023-01-01', '2023-02-12')
+# revenue('2023-01-01', '2023-08-12')
 # revenue('2023-01-01', '2023-02-28')
 
 # RAPPORTAGE VAN DE WINST OVER GESPECIFICEERDE TIJDSPERIODEN (winst in deze situatie: verkoopprijs - inkoopprijs)
@@ -246,10 +247,12 @@ def profit(start_date, end_date):
 
                 profit = total_revenue - total_purchase
         
-        return print(profit)
+    # csv file met profit over tijdsperiode in naam van csv file:
+    with open(f'profit {start_date} - {end_date}.csv', mode= 'w') as file:
+        file.write(str(profit))
 
 
-# profit('2023-01-01', '2023-02-12')
+# profit('2023-01-01', '2023-08-12')
 
 # Superpy command line tool: werken met Parser en subparsers
 
@@ -365,10 +368,10 @@ def main(command_line=None):
     elif args.command == 'sell':       # python main.py sell 'Apple', 4, 2, '2023-10-19'
         sell(args.product, args.amount, args.price, args.expiration_date)
 
-    elif args.command == 'revenue':       # python main.py revenue 2023-01-01 2023-02-28      
+    elif args.command == 'revenue':       # python main.py revenue 2023-01-01 2023-08-12      
         revenue(args.start_date, args.end_date)
     
-    elif args.command == 'profit':       # python main.py profit 2023-01-01 2023-02-28      
+    elif args.command == 'profit':       # python main.py profit 2023-01-01 2023-08-12      
         profit(args.start_date, args.end_date)
 
     else:
