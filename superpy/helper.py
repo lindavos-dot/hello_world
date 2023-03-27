@@ -33,6 +33,7 @@ def reset_today(): # datum terugzetten naar kalender datum
 
 # reset_today()
 
+
 def get_today():  # uitlezen welke datum is opgeslagen 
     with open('time.csv', mode= 'r') as file:
         reader = csv.reader(file)
@@ -100,7 +101,8 @@ def delete_line(filename, product):
 
 
 # delete_line('current_stock.csv', 'Plum')
-# delete_line('current_stock.csv', 'Banana')
+# delete_line('sales.csv', 'Snoep')
+
 
 # LATEN ZIEN DAT EEN PRODUCT NIET IS VERKOCHT, MAAR DE HOUDBAARHEIDSDATUM IS VERSTREKEN
 def expiration_date_expired():

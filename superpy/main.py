@@ -113,44 +113,44 @@ def buy(product, amount, price, expiration_date):
                 append_new_lines(path, id, product, amount, price, expiration_date)
 
 # buy('Koek', 1, 2, '2023-10-19')
-# buy('Plantje', 2, 2, '2023-10-18')
-
-
-
-
-
-
-
-
-
+# buy('Plantje', 10, 2, '2023-10-18')
 
 
 # ALS ER EEN PRODUCT WORDT VERKOCHT: SCHRIJVEN NAAR VERKOOP BESTAND EN VOORRAAD BESTAND
-def sell(path, id, product, amount, price, expiration_date):
-    path = 'c:/Users/Linda Vos/Desktop/hello-world/superpy/sales.csv'
+def sell(product, amount, price, expiration_date):
+           
+    path = 'c:/Users/Linda Vos/Desktop/hello-world/superpy/current_stock.csv'
     id = 'id'
-    check_document(path)
+    check_document(path)    
     
     with open(path, mode= 'r') as file:
         csv_reader = csv.DictReader(file)
         
+        old_row = {}
+        new_row = {}
+
         for row in csv_reader:
-            
             if row['product'] == product and row['expiration_date'] == expiration_date:
-                current_amount = float(row['amount'])
-                new_amount = current_amount - float(amount)
+                               
+                old_row = row
+                new_row = row
 
-                text = open(path, mode= 'r')
-                text = ''.join([word for word in text]).replace(str(current_amount), str(new_amount))
+                delete_line(path, old_row['product'])
+                current_amount = new_row['amount']               
+                new_amount = int(current_amount) - int(amount)
+                new_row['amount'] = new_amount
                 
-                updated_stock = open(path, mode= 'w')
-                updated_stock.writelines(text)
-                updated_stock.close()
-
-                append_new_lines(path, id, product, amount, price, expiration_date)
-
-            else:
+                append_new_lines(path, new_row['id'], new_row['product'], new_row['amount'], new_row['price'], new_row['expiration_date'])
+                append_new_lines('c:/Users/Linda Vos/Desktop/hello-world/superpy/sales.csv', id, product, amount, price, expiration_date)
+                print('Stock and sales list are updated')
+            
+        else:
+            if row['product'] != product:
                 print(f'{product} is sold out')
+
+
+# sell('Plantje', 1, 2, '2023-10-18')
+# sell('Snoep', 1, 2, '2023-10-18')
 
 
 # VOORRAAD AANVRAAG VOOR 1 SPECIFIEK PRODUCT
