@@ -269,7 +269,10 @@ def profit(start_date, end_date):
 def main(command_line=None):
     parser = argparse.ArgumentParser(description='Superpy command line tool for for supermarket data')
     subparsers = parser.add_subparsers(dest='command')
-
+    
+    # subparser "reset_today"
+    reset_date_today = subparsers.add_parser('reset_today', help= 'Reset the date to the calendar date')
+    
     # subparser "today"
     get_date_today = subparsers.add_parser('today', help= 'Show today\'s date')
 
@@ -326,14 +329,17 @@ def main(command_line=None):
 
     args = parser.parse_args(command_line)
 
-    if args.command == 'today':     # python main.py today
+    if args.command == 'reset_today':     # python main.py reset_today
+        reset_today()
+        
+    elif args.command == 'today':     # python main.py today
         print(get_today())
     
     elif args.command == 'advance_time':     # python main.py advance_time 2
-        print(advance_time(args.number))
+        advance_time(args.number)
 
     elif args.command == 'backward_time':     # python main.py backward_time 2
-        print(backward_time(args.number))
+        backward_time(args.number)
 
     elif args.command == 'inventory':     # python main.py inventory
         inventory('inventory.csv')

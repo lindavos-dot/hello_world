@@ -50,7 +50,11 @@ options:
   -h, --help            show this help message and exit
 
 ## working with time
-The command "today" shows today's date. "Today" does not take positional arguments.
+The command "reset_today" resets the date to the calendar date. "reset_today" does not take positional arguments.
+
+superpy>main.py reset_today
+
+The command "today" shows today's date. "today" does not take positional arguments.
 
 superpy>main.py today
 
