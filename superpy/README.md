@@ -17,11 +17,13 @@ Financial insight has two program components: profit and revenue.
 
 # Before using
 
-Open a command line tool. First, check whether you have Python installed on your computer. If not, download python. Download and save Superpy to your computer. And download all modules that this program uses: (argparse, csv, datetime, rich, pandas, os and csv2pdf). Create a folder (directory) called superpy in your current working directory. You can decide for yourself how to do that. If you can't do this by the command prompt or powershell, you can use the helper function create_working_directory('superpy').
+Open a command line tool. First, check whether you have Python installed on your computer. If not, download python. Create a folder (directory) called superpy in your current working directory. You can decide for yourself how to do that. If you can't do this by the command prompt or powershell, you can use the helper function create_working_directory('superpy').
 
 The command "directory" creates a folder where the csv files are stored. "directory" does not take positional arguments.
 
 superpy>main.py directory
+
+Download and save Superpy to your computer. And download all modules that this program uses: (argparse, csv, datetime, rich, pandas, os and csv2pdf). 
 
 # User manual
 
