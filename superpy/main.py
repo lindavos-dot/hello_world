@@ -23,7 +23,7 @@ def inventory(filename):  # first additional feature added: rich
         
         for row in csv_reader:
             product = row['product']
-            # print(product) # laat dezelfde producten twee keer zien (gewenste lijst maken)
+            # print(product) # laat dezelfde producten met andere houdbaarheidsdatum twee keer zien (gewenste lijst maken)
             if product not in list_products:
                 list_products.append(product)
 
@@ -33,12 +33,8 @@ def inventory(filename):  # first additional feature added: rich
 #inventory('current_stock.csv')
 
 # second additional feature added: csv2pdf import convert
-def inventory_csv_to_pdf(filename): # we start by removing duplicates using pandas
-    search_in_file = pd.read_csv(get_path(filename))
-    search_in_file.drop_duplicates(inplace=True)
-    search_in_file.to_csv(get_path(filename), index=False)
-    
-    return convert(get_path(filename), 'current_stock_in_pdf.pdf') # laat zien wat het assortiment is in PDF
+def inventory_csv_to_pdf(filename):    
+    return convert(get_path(filename), 'current_stock_in_pdf.pdf') # laat zien wat op voorraad is in PDF
 
 
 #inventory_csv_to_pdf('current_stock.csv')
