@@ -76,7 +76,7 @@ def sales_information(filename):
 
 
 # HOEVEEL VAN ELK TYPE PRODUCT HEEFT DE SUPERMARKT NU OP VOORRAAD?
-# ALS ER EEN NIEUW PRODUCT WORDT INGEKOCHT: SCHRIJVEN NAAR INKOOP BESTAND EN VOORRAAD BESTAND
+# De buy functie schrijft naar 2 csv bestanden: ingekochte producten gaan naar het inkoopbestand. Daarnaast wordt de voorraad bijgewerkt in het voorraadbestand
 def buy(product, amount, price, expiration_date):
     product = product.lower()
     path = get_path('current_stock.csv')
@@ -113,6 +113,7 @@ def buy(product, amount, price, expiration_date):
 
 
 # ALS ER EEN PRODUCT WORDT VERKOCHT: SCHRIJVEN NAAR VERKOOP BESTAND EN VOORRAAD BESTAND
+# De sell functie schrijft naar 2 csv bestanden: verkochte producten gaan naar het verkoopbestand. Daarnaast wordt de voorraad bijgewerkt in het voorraadbestand
 def sell(product, amount, price, expiration_date):
     product = product.lower()      
     path = get_path('current_stock.csv')
@@ -211,7 +212,7 @@ def revenue(start_date, end_date):
                 total_revenue += price * amount
                 
                 # csv file met revenue over tijdsperiode in naam van csv file:
-                with open(f'revenue {start_date} - {end_date}.csv', mode= 'w') as file:
+                with open(get_path(f'revenue {start_date} - {end_date}.csv'), mode= 'w') as file:
                     file.write(str(total_revenue))
     
 
@@ -243,7 +244,7 @@ def profit(start_date, end_date):
                 profit = total_revenue - total_purchase
         
     # csv file met profit over tijdsperiode in naam van csv file:
-    with open(f'profit {start_date} - {end_date}.csv', mode= 'w') as file:
+    with open(get_path(f'profit {start_date} - {end_date}.csv'), mode= 'w') as file:
         file.write(str(profit))
 
 
@@ -251,7 +252,8 @@ def profit(start_date, end_date):
 
 # Superpy command line tool: werken met Parser en subparsers
 
-# WERKEN MET TIJD "today", "advance_time", "backward_time"
+# FOLDER AANMAKEN "directory"
+# WERKEN MET TIJD "reset_today", "today", "advance_time", "backward_time"
 # WELKE PRODUCTEN BIEDT DE SUPERMARKT AAN? "inventory" 
 # WELKE PRODUCTEN BIEDT DE SUPERMARKT AAN? "inventory_csv_to_pdf"
 # INKOOP REGISTREREN IN INKOOP- EN VOORRAADLIJST "buy"
@@ -267,7 +269,10 @@ def profit(start_date, end_date):
 def main(command_line=None):
     parser = argparse.ArgumentParser(description='Superpy command line tool for for supermarket data')
     subparsers = parser.add_subparsers(dest='command')
-    
+
+    # subparser "directory"
+    get_working_directory = subparsers.add_parser('directory', help= 'Creates a folder (directory) called superpy in your current working directory.')
+
     # subparser "reset_today"
     reset_date_today = subparsers.add_parser('reset_today', help= 'Reset the date to the calendar date')
     
@@ -327,11 +332,14 @@ def main(command_line=None):
 
     args = parser.parse_args(command_line)
 
-    if args.command == 'reset_today':     # python main.py reset_today
+    if args.command == 'directory':     # python main.py directory
+        create_working_directory('superpy')
+
+    elif args.command == 'reset_today':     # python main.py reset_today
         reset_today()
         
     elif args.command == 'today':     # python main.py today
-        get_today()
+        print(get_today())
     
     elif args.command == 'advance_time':     # python main.py advance_time 2
         advance_time(args.number)
@@ -370,7 +378,7 @@ def main(command_line=None):
         profit(args.start_date, args.end_date)
 
     else:
-        print('Command not recognized (choose from \'today\', \'advance_time\', \'backward_time\', \'inventory\', \'inventory_csv_to_pdf\', \'purchases\', \'sales\', \'lack\', \'stock\', \'buy\', \'sell\',\'revenue\', \'profit\')')
+        print('Command not recognized (choose from \'directory\', \'today\', \'reset_today\',\'advance_time\', \'backward_time\', \'inventory\', \'inventory_csv_to_pdf\', \'purchases\', \'sales\', \'lack\', \'stock\', \'buy\', \'sell\',\'revenue\', \'profit\')')
 
 
 
