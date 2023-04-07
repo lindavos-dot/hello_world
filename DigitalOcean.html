@@ -1,0 +1,25 @@
+
+server {
+    # List on port 81 so that we don't clash with the existing one,
+    # which is listening on 80.
+    listen 81;
+    listen [::]:81;
+
+    # This can be anything for now.
+    server_name foo.example.com;
+
+    # Indicate where this website's files live 
+    root /var/www/foo;
+
+    # Which file should be returned for a request to /
+    index index.html;
+
+    # Any other files should be looked for relative to the root directory
+    # If they are not found, serve a 404
+    location / {
+        try_files $uri $uri/ =404;
+    }
+}
+
+
+
