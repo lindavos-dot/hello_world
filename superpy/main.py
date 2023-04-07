@@ -1,7 +1,6 @@
 # Imports
 import argparse
 import csv
-from datetime import date
 from helper import *
 from rich.console import Console
 import pandas as pd
@@ -18,7 +17,7 @@ __human_name__ = "superpy"
 # WELKE PRODUCTEN BIEDT DE SUPERMARKT AAN?
 def inventory(filename):  # first additional feature added: rich
     console = Console()
-    with open(filename, mode= 'r') as csv_file:
+    with open(get_path(filename), mode= 'r') as csv_file:
         csv_reader = csv.DictReader(csv_file)
         list_products = []      
         
@@ -31,22 +30,23 @@ def inventory(filename):  # first additional feature added: rich
     console.print(list_products, style='bold red on white')
 
 
-# inventory('inventory.csv')
+#inventory('current_stock.csv')
 
 # second additional feature added: csv2pdf import convert
 def inventory_csv_to_pdf(filename): # we start by removing duplicates using pandas
-    search_in_file = pd.read_csv(filename)
+    search_in_file = pd.read_csv(get_path(filename))
     search_in_file.drop_duplicates(inplace=True)
-    search_in_file.to_csv(filename, index=False)
+    search_in_file.to_csv(get_path(filename), index=False)
     
-    return convert(filename, 'inventory.pdf') # daarna kunnen we csv2pdf import convert gebruiken
+    return convert(get_path(filename), 'current_stock_in_pdf.pdf') # laat zien wat het assortiment is in PDF
 
 
-# inventory_csv_to_pdf('inventory.csv')
+#inventory_csv_to_pdf('current_stock.csv')
 
-# VOOR HOEVEEL IS ELK TYPE PRODUCT GEKOCHT EN WAT IS DE VERVALDATUM?
+
+# VOOR HOEVEEL IS ELK TYPE PRODUCT INGEKOCHT EN WAT IS DE VERVALDATUM?
 def purchase_information(filename):
-    with open(filename, mode= 'r') as csv_file:
+    with open(get_path(filename), mode= 'r') as csv_file:
         csv_reader = csv.DictReader(csv_file)  
         
         for row in csv_reader:
@@ -59,13 +59,13 @@ def purchase_information(filename):
             print(f'and in addition, this {product} is best before {date}')
 
 
-# purchase_information('purchases.csv')
+#purchase_information('purchases.csv')
 
 
 # VOOR HOEVEEL IS ELK TYPE PRODUCT VERKOCHT? OF ALS HET OVER DATUM IS TOESCHRIJVEN NAAR DERVING.CSV
 # VOOR HOEVEEL IS ELK TYPE PRODUCT VERKOCHT?
 def sales_information(filename):
-    with open(filename, mode= 'r') as csv_file:
+    with open(get_path(filename), mode= 'r') as csv_file:
         csv_reader = csv.DictReader(csv_file)  
         
         for row in csv_reader:
@@ -82,12 +82,12 @@ def sales_information(filename):
 # HOEVEEL VAN ELK TYPE PRODUCT HEEFT DE SUPERMARKT NU OP VOORRAAD?
 # ALS ER EEN NIEUW PRODUCT WORDT INGEKOCHT: SCHRIJVEN NAAR INKOOP BESTAND EN VOORRAAD BESTAND
 def buy(product, amount, price, expiration_date):
-       
-    path = 'c:/Users/Linda Vos/Desktop/hello-world/superpy/current_stock.csv'
+    product = product.lower()
+    path = get_path('current_stock.csv')
     id = 'id'
-    check_document(path)    
+    #check_document(path)    
     
-    append_new_lines('c:/Users/Linda Vos/Desktop/hello-world/superpy/purchases.csv', id, product, amount, price, expiration_date)
+    append_new_lines(get_path('purchases.csv'), id, product, amount, price, expiration_date)
 
     with open(path, mode= 'r') as file:
         csv_reader = csv.DictReader(file)
@@ -112,16 +112,15 @@ def buy(product, amount, price, expiration_date):
             if row['product'] != product:
                 append_new_lines(path, id, product, amount, price, expiration_date)
 
-# buy('Koek', 1, 2, '2023-10-19')
-# buy('Plantje', 10, 2, '2023-10-18')
+
+#buy('Plantje', 10, 2, '2023-10-18')
 
 
 # ALS ER EEN PRODUCT WORDT VERKOCHT: SCHRIJVEN NAAR VERKOOP BESTAND EN VOORRAAD BESTAND
 def sell(product, amount, price, expiration_date):
-           
-    path = 'c:/Users/Linda Vos/Desktop/hello-world/superpy/current_stock.csv'
-    id = 'id'
-    check_document(path)    
+    product = product.lower()      
+    path = get_path('current_stock.csv')
+    id = 'id'  
     
     with open(path, mode= 'r') as file:
         csv_reader = csv.DictReader(file)
@@ -141,7 +140,7 @@ def sell(product, amount, price, expiration_date):
                 new_row['amount'] = new_amount
                 
                 append_new_lines(path, new_row['id'], new_row['product'], new_row['amount'], new_row['price'], new_row['expiration_date'])
-                append_new_lines('c:/Users/Linda Vos/Desktop/hello-world/superpy/sales.csv', id, product, amount, price, expiration_date)
+                append_new_lines(get_path('sales.csv'), id, product, amount, price, expiration_date)
                 print('Stock and sales list are updated')
             
         else:
@@ -149,15 +148,15 @@ def sell(product, amount, price, expiration_date):
                 print(f'{product} is sold out')
 
 
-# sell('Plantje', 1, 2, '2023-10-18')
-# sell('Snoep', 1, 2, '2023-10-18')
+#sell('Plantje', 10, 5, '2023-10-18')
+#sell('Snoep', 1, 2, '2023-10-18') #snoep is sold out
 
 
 # VOORRAAD AANVRAAG VOOR 1 SPECIFIEK PRODUCT
 def current_stock(product):
     expiration_date_expired() # als het goed is staat er nu alleen data in de lijst die niet over datum is    
     
-    with open('current_stock.csv', mode= 'r') as csv_file:
+    with open(get_path('current_stock.csv'), mode= 'r') as csv_file:
         csv_reader = csv.DictReader(csv_file)
         
         for row in csv_reader:
@@ -176,7 +175,7 @@ def current_stock(product):
 def total_in_stock(filename): 
     expiration_date_expired()
     
-    with open(filename, mode= 'r') as csv_file:
+    with open(get_path(filename), mode= 'r') as csv_file:
         csv_reader = csv.DictReader(csv_file)
         
         for row in csv_reader:
@@ -192,7 +191,7 @@ def total_in_stock(filename):
 def spoiled_products(): 
     expiration_date_expired()
     
-    with open('expiration_date_expired.csv', mode= 'r') as csv_file:
+    with open(get_path('expiration_date_expired.csv'), mode= 'r') as csv_file:
         csv_reader = csv.DictReader(csv_file)
         
         for row in csv_reader:
@@ -205,7 +204,7 @@ def spoiled_products():
 
 # RAPPORTAGE VAN DE OMZET OVER GESPECIFICEERDE TIJDSPERIODEN (omzet: verkoopprijs * aantal)
 def revenue(start_date, end_date):
-    with open('sales.csv', mode= 'r') as csv_file:
+    with open(get_path('sales.csv'), mode= 'r') as csv_file:
         csv_reader = csv.DictReader(csv_file)  
         total_revenue = 0
 
@@ -225,7 +224,7 @@ def revenue(start_date, end_date):
 
 # RAPPORTAGE VAN DE WINST OVER GESPECIFICEERDE TIJDSPERIODEN (winst in deze situatie: verkoopprijs - inkoopprijs)
 def profit(start_date, end_date):
-    with open('sales.csv', mode= 'r') as csv_file:
+    with open(get_path('sales.csv'), mode= 'r') as csv_file:
         csv_reader = csv.DictReader(csv_file)  
         total_revenue = 0
 
@@ -235,7 +234,7 @@ def profit(start_date, end_date):
                 amount = float(row['amount'])
                 total_revenue += price * amount
 
-    with open('purchases.csv', mode= 'r') as csv_file:
+    with open(get_path('purchases.csv'), mode= 'r') as csv_file:
         csv_reader = csv.DictReader(csv_file)  
         total_purchase = 0
 
@@ -336,7 +335,7 @@ def main(command_line=None):
         reset_today()
         
     elif args.command == 'today':     # python main.py today
-        print(get_today())
+        get_today()
     
     elif args.command == 'advance_time':     # python main.py advance_time 2
         advance_time(args.number)
