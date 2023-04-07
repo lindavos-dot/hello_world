@@ -1,7 +1,7 @@
 # import
-import datetime
 import os
 import csv
+from datetime import datetime, timedelta
 
 # Hier staat de (generieke)code om csv bestanden aan te maken en te bewerken
 
@@ -26,12 +26,12 @@ def check_document(path):
 # WORKING WITH TIME MODULES
 
 def reset_today(): # datum terugzetten naar kalender datum
-    today = datetime.date.today()
+    today = datetime.today().strftime('%Y-%m-%d')
     with open('time.csv', mode= 'w') as file:
-        file.write(str(today))
+        file.write(today)
 
 
-# reset_today()
+#reset_today()
 
 
 def get_today():  # uitlezen welke datum is opgeslagen 
@@ -41,35 +41,38 @@ def get_today():  # uitlezen welke datum is opgeslagen
             return date[0]
 
 
-# print(get_today())
+#print(get_today())
+
+def get_today_object():  #tussenstap is nodig om herhaling van code te voorkomen in advance_time en backward_time, van string naar object voor timedelta (TypeError)
+    today = get_today() 
+    today_object = datetime.strptime(today, '%Y-%m-%d').date()
+    return today_object
 
 
-def advance_time(number): # datum vooruit zetten
-    
-    today = datetime.date.today() 
-    days = datetime.timedelta(days= number)
-    set_date = today + days
+#print(get_today_object())
+
+def advance_time(number): # datum vooruit zetten  
+    days = timedelta(days= number)
+    set_date = get_today_object() + days
 
     with open('time.csv', mode= 'w') as file:
         file.write(str(set_date))
 
 
-# advance_time(2)
-# print(get_today())
+#advance_time(2)
+#print(get_today())
 
 
 def backward_time(number): # datum achteruit zetten
-
-    today = datetime.date.today() 
-    days = datetime.timedelta(days=number)
-    set_date = today - days
+    days = timedelta(days= number)
+    set_date = get_today_object() - days
 
     with open('time.csv', mode= 'w') as file:
         file.write(str(set_date))
 
 
-# print(backward_time(2))
-# print(get_today())
+#backward_time(2)
+#print(get_today())
 
 
 # WRITING A LINE TO A DOCUMENT
