@@ -5,12 +5,29 @@ from datetime import datetime, timedelta
 
 # Hier staat de (generieke)code om csv bestanden aan te maken en te bewerken
 
+# Setting up a working directory: option to create a folder, absolute paths and checking on files
+def create_working_directory(foldername): # set up folder where csv files are stored
+    directory = os.path.join(os.getcwd(), foldername)
+    return os.mkdir(directory)
+
+
+# create_working_directory('test')
+# create_working_directory('superpy')
+
+def get_path(filename): # function helper
+    path = os.path.abspath(os.path.join(os.getcwd(), filename))
+    return path
+
+#print(get_path('current_stock.csv'))
+
+
 # CHECK DOCUMENT and WRITE HEADER
-def check_document(path):
+def check_document(filename):
+    path = get_path(filename)
     check_file = os.path.isfile(os.path.join(path))
 
     if check_file == True:
-        file = check_file
+        filename = check_file
 
     elif check_file == False:
         with open(path, mode= 'w', newline='') as file:
@@ -19,23 +36,25 @@ def check_document(path):
             return header
 
 
-# check_document('c:/Users/Linda Vos/Desktop/hello-world/superpy//test.csv')  # nakijken of het werkt
-# check_document('c:/Users/Linda Vos/Desktop/hello-world/superpy test2.csv')  # nakijken of het werkt
-
+#check_document('current_stock.csv')
+#check_document('purchases.csv')
+#check_document('sales.csv')
 
 # WORKING WITH TIME MODULES
 
 def reset_today(): # datum terugzetten naar kalender datum
+    path = get_path('time.csv') 
     today = datetime.today().strftime('%Y-%m-%d')
-    with open('time.csv', mode= 'w') as file:
-        file.write(today)
+    with open(path, mode= 'w') as file:
+        file.write(str(today))
 
 
 #reset_today()
 
 
 def get_today():  # uitlezen welke datum is opgeslagen 
-    with open('time.csv', mode= 'r') as file:
+    path = get_path('time.csv') 
+    with open(path, mode= 'r') as file:
         reader = csv.reader(file)
         for date in reader:
             return date[0]
@@ -54,8 +73,8 @@ def get_today_object():  #tussenstap is nodig om herhaling van code te voorkomen
 def advance_time(number): # datum vooruit zetten  
     days = timedelta(days= number)
     set_date = get_today_object() + days
-
-    with open('time.csv', mode= 'w') as file:
+    path = get_path('time.csv') 
+    with open(path, mode= 'w') as file:
         file.write(str(set_date))
 
 
@@ -66,8 +85,8 @@ def advance_time(number): # datum vooruit zetten
 def backward_time(number): # datum achteruit zetten
     days = timedelta(days= number)
     set_date = get_today_object() - days
-
-    with open('time.csv', mode= 'w') as file:
+    path = get_path('time.csv') 
+    with open(path, mode= 'w') as file:
         file.write(str(set_date))
 
 
@@ -76,22 +95,23 @@ def backward_time(number): # datum achteruit zetten
 
 
 # WRITING A LINE TO A DOCUMENT
-def append_new_lines(path, id, product, amount, price, expiration_date):
-    check_document(path)
+def append_new_lines(filename, id, product, amount, price, expiration_date):
+    check_document(filename)
 
-    with open(path, mode= 'a', newline='') as file:
+    with open(get_path(filename), mode= 'a', newline='') as file:
         writer = csv.writer(file, delimiter=',')
         mutation_date = get_today()
-        writer.writerow([id, mutation_date, product, amount, price, expiration_date])
+        writer.writerow([id, mutation_date, product.lower(), amount, price, expiration_date])
 
 
-# append_new_lines('c:/Users/Linda Vos/Desktop/hello-world/superpy/current_stock.csv', 'id', 'Plum', 4, 2, '2023-10-19')  # nakijken of het werkt
-# append_new_lines('c:/Users/Linda Vos/Desktop/hello-world/superpy/current_stock.csv', 'id', 'Apple', 4, 2, '2023-10-18')  # nakijken of het werkt
+#append_new_lines('test.csv', 'id', 'Plum', 4, 2, '2023-10-19')  # nakijken of het werkt
+#append_new_lines('purchases.csv', 'id', 'plantje', 10, 2, '2023-10-18')  # nakijken of het werkt
 
 
 # DELETING A LINE FROM THE DOCUMENT
 def delete_line(filename, product):
-    with open(filename, mode= 'r') as read_file:
+    product = product.lower()
+    with open(get_path(filename), mode= 'r') as read_file:
         csv_reader = csv.reader(read_file)
         list_of_csv = list(csv_reader)
 
@@ -100,36 +120,35 @@ def delete_line(filename, product):
                 if word == product:
                     list_of_csv.remove(row)
                   
-    with open(filename, mode= 'w', newline='') as writeFile:
+    with open(get_path(filename), mode= 'w', newline='') as writeFile:
         writer = csv.writer(writeFile)
         return writer.writerows(list_of_csv)
 
 
-# delete_line('current_stock.csv', 'Plum')
+#delete_line('purchases.csv', 'plantje')
 # delete_line('sales.csv', 'Snoep')
 
 
 # LATEN ZIEN DAT EEN PRODUCT NIET IS VERKOCHT, MAAR DE HOUDBAARHEIDSDATUM IS VERSTREKEN
 def expiration_date_expired():
-    check_document('c:/Users/Linda Vos/Desktop/hello-world/superpy/expiration_date_expired.csv')
-    check_document('c:/Users/Linda Vos/Desktop/hello-world/superpy/current_stock.csv')
+    check_document('expiration_date_expired.csv')
+    check_document('current_stock.csv')
     
-    filename = 'current_stock.csv'
-    with open(filename, mode= 'r') as read_file:
+    with open(get_path('current_stock.csv'), mode= 'r') as read_file:
         csv_reader = csv.DictReader(read_file)
         list_of_csv = list(csv_reader)
         expired_products = []
         
-        date_today = get_today()
+        date_today = reset_today()
         for row in list_of_csv:
             date = row['expiration_date']
-            if date <= date_today:
+            if date <= str(date_today):
                 list_of_csv.remove(row)
                 expired_products.append(row)
     
     
     header = ['id','mutation_date','product','amount','price','expiration_date']       
-    with open('current_stock.csv', mode= 'w', newline= '') as csvfile:
+    with open(get_path('current_stock.csv'), mode= 'w', newline= '') as csvfile:
         writer = csv.DictWriter(csvfile, fieldnames=header)
         writer.writeheader() 
         
@@ -137,7 +156,7 @@ def expiration_date_expired():
             writer.writerow(data) 
     
     header = ['id','mutation_date','product','amount','price','expiration_date']   
-    with open('expiration_date_expired.csv', mode= 'a', newline='') as csvfile:
+    with open(get_path('expiration_date_expired.csv'), mode= 'a', newline='') as csvfile:
         writer = csv.DictWriter(csvfile, fieldnames=header)
         # writer.writeheader() 
         
@@ -145,5 +164,5 @@ def expiration_date_expired():
             return writer.writerow(data)  
 
 
-# append_new_lines('c:/Users/Linda Vos/Desktop/hello-world/superpy/current_stock.csv', 'id', 'Apple', 4, 2, '2022-10-19')  # toevoegen over datum appels
-# expiration_date_expired()
+#append_new_lines('current_stock.csv', 'id', 'Banana', 4, 2, '2022-10-19')  # toevoegen over datum appels
+#expiration_date_expired()
