@@ -37,7 +37,7 @@ Superpy command line tool for supermarket data
 
 positional arguments:
   {today,advance_time,backward_time,inventory,inventory_csv_to_pdf,purchases,sales,lack,stock,buy,sell,revenue,profit}
--    today                Show today's date
+-    today                Shows internal date
 -    reset_today          Reset the internal date to calendar date
 -    advance_time         Moves the internal date forward by the desired number of days
 -    backward_time        Moves the internal date backwards by the desired number of days
@@ -56,11 +56,11 @@ options:
   -h, --help            show this help message and exit
 
 ## working with time
-The command "reset_today" resets the date to the calendar date. "reset_today" does not take positional arguments.
+The command "reset_today" resets the internal date to the calendar date. "reset_today" does not take positional arguments.
 
 superpy>main.py reset_today
 
-The command "today" shows today's date. "today" does not take positional arguments.
+The command "today" shows internal date. "today" does not take positional arguments.
 
 superpy>main.py today
 
