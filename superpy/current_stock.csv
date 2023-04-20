@@ -1,2 +1,4 @@
 id,mutation_date,product,amount,price,expiration_date
-id,2023-04-07,kaas,1,2,2023-10-17
+id,2023-04-07,koek,1,2,2023-10-24
+id,2023-04-07,koek,1,2,2023-10-23
+id,2023-04-07,koek,1,2,2023-10-22
