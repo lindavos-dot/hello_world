@@ -14,27 +14,44 @@ __human_name__ = "superpy"
 # Your code below this line.
 
 
-# WELKE PRODUCTEN BIEDT DE SUPERMARKT AAN?
+# Welke producten biedt de supermarkt aan? 
+# Informatie over assortiment (dus niet informatie over welke producten van het assortiment op voorraad is)
+
+def add_inventory(filename, product): # opstellen en toevoegen producten aan assortiment (producten toevoegen en verwijderen uit voorraad zie buy() & sell())
+    check_document(filename)
+    id = 'id'
+    product = product.lower()
+    amount = 'in current_stock.csv'
+    price = 'in sales.csv'
+    expiration_date = 'in expiration_date_expired.csv'
+    return append_new_lines(filename, id, product, amount, price, expiration_date)
+
+
 def inventory(filename):  # first additional feature added: rich
     console = Console()
-    with open(get_path(filename), mode= 'r') as csv_file:
+    with open(filename, mode= 'r') as csv_file:
         csv_reader = csv.DictReader(csv_file)
         list_products = []      
         
         for row in csv_reader:
             product = row['product']
-            # print(product) # laat dezelfde producten met andere houdbaarheidsdatum twee keer zien (gewenste lijst maken)
+            # print(product) # laat dezelfde producten twee keer zien (gewenste lijst maken)
             if product not in list_products:
                 list_products.append(product)
 
     console.print(list_products, style='bold red on white')
 
 
-#inventory('current_stock.csv')
-
 # second additional feature added: csv2pdf import convert
-def inventory_csv_to_pdf(filename):    
-    return convert(get_path(filename), 'current_stock_in_pdf.pdf') # laat zien wat op voorraad is in PDF
+def inventory_csv_to_pdf(filename): # we start by removing duplicates using pandas
+    search_in_file = pd.read_csv(filename)
+    search_in_file.drop_duplicates(inplace=True)
+    search_in_file.to_csv(filename, index=False)
+    
+    return convert(filename, 'inventory.pdf') # daarna kunnen we csv2pdf import convert gebruiken
+
+
+inventory_csv_to_pdf('inventory.csv') # laat zien wat het assortiment is in PDF
 
 
 #inventory_csv_to_pdf('current_stock.csv')
