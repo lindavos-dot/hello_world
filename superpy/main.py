@@ -25,9 +25,9 @@ def add_inventory(filename, product): # opstellen en toevoegen producten aan ass
     check_document(filename)
     id = 'id'
     product = product.lower()
-    amount = 'in current_stock.csv'
-    price = 'in sales.csv'
-    expiration_date = 'in expiration_date_expired.csv'
+    amount = 'current_stock.csv'
+    price = 'sales.csv'
+    expiration_date = 'expiration_date_expired.csv'
     return append_new_lines(filename, id, product, amount, price, expiration_date)
 
 

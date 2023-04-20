@@ -1,7 +1,6 @@
 id,mutation_date,product,amount,price,expiration_date
-id,2023-04-07,appel,in current_stock.csv,in sales.csv,in expiration_date_expired.csv
-id,2023-04-07,banaan,in current_stock.csv,in sales.csv,in expiration_date_expired.csv
-id,2023-04-07,peer,in current_stock.csv,in sales.csv,in expiration_date_expired.csv
-id,2023-04-07,kiwi,in current_stock.csv,in sales.csv,in expiration_date_expired.csv
-id,2023-04-07,ananas,in current_stock.csv,in sales.csv,in expiration_date_expired.csv
-id,2023-04-07,blauwe druif,in current_stock.csv,in sales.csv,in expiration_date_expired.csv
+id,2023-04-07,appel,current_stock.csv,sales.csv,expiration_date_expired.csv
+id,2023-04-07,peer,current_stock.csv,sales.csv,expiration_date_expired.csv
+id,2023-04-07,kiwi,current_stock.csv,sales.csv,expiration_date_expired.csv
+id,2023-04-07,ananas,current_stock.csv,sales.csv,expiration_date_expired.csv
+id,2023-04-07,blauwe druif,current_stock.csv,sales.csv,expiration_date_expired.csv
