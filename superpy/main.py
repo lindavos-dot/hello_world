@@ -92,6 +92,7 @@ def buy(product, amount, price, expiration_date):
         new_row = {}
 
         for row in csv_reader:
+            print(row['product'])
             if row['product'] == product and row['expiration_date'] == expiration_date:
                                
                 old_row = row
