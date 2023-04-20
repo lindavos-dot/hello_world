@@ -13,6 +13,9 @@ __human_name__ = "superpy"
 
 # Your code below this line.
 
+'''
+ASSORTIMENT ONDERDEEL
+'''
 
 # Welke producten biedt de supermarkt aan? 
 # Informatie over assortiment (dus niet informatie over welke producten van het assortiment op voorraad is)
@@ -51,13 +54,13 @@ def inventory_csv_to_pdf(filename): # we start by removing duplicates using pand
     return convert(filename, 'inventory.pdf') # daarna kunnen we csv2pdf import convert gebruiken
 
 
-inventory_csv_to_pdf('inventory.csv') # laat zien wat het assortiment is in PDF
+#inventory_csv_to_pdf('inventory.csv') # laat zien wat het assortiment is in PDF
 
+'''
+INKOOP & VOORRAAD ONDERDEEL
+'''
 
-#inventory_csv_to_pdf('current_stock.csv')
-
-
-# VOOR HOEVEEL IS ELK TYPE PRODUCT INGEKOCHT EN WAT IS DE VERVALDATUM?
+# Voor hoeveel is elk type product ingekocht en wat is de vervaldatum?
 def purchase_information(filename):
     with open(get_path(filename), mode= 'r') as csv_file:
         csv_reader = csv.DictReader(csv_file)  
@@ -74,37 +77,19 @@ def purchase_information(filename):
 
 #purchase_information('purchases.csv')
 
-
-# VOOR HOEVEEL IS ELK TYPE PRODUCT VERKOCHT? OF ALS HET OVER DATUM IS TOESCHRIJVEN NAAR DERVING.CSV
-# VOOR HOEVEEL IS ELK TYPE PRODUCT VERKOCHT?
-def sales_information(filename):
-    with open(get_path(filename), mode= 'r') as csv_file:
-        csv_reader = csv.DictReader(csv_file)  
-        
-        for row in csv_reader:
-            product = row['product']
-            price = float(row['price'])
-            amount = float(row['amount'])
-            total_sales_price = amount * price
-            print(f'This {product} was sold for {price} euro and the total of {amount} pieces was sold for {total_sales_price} euro\'s')
-
-
-# sales_information('sales.csv')
-
-
-# HOEVEEL VAN ELK TYPE PRODUCT HEEFT DE SUPERMARKT NU OP VOORRAAD?
+# Hoeveel van elk type product (in assortiment) heeft de supermarkt nu op voorraad?
 # De buy functie schrijft naar 2 csv bestanden: ingekochte producten gaan naar het inkoopbestand. Daarnaast wordt de voorraad bijgewerkt in het voorraadbestand
+
 def buy(product, amount, price, expiration_date):
     product = product.lower()
     path = get_path('current_stock.csv')
     id = 'id'
     check_document(path)    
     
-    #append_new_lines(get_path('purchases.csv'), id, product, amount, price, expiration_date)
+    append_new_lines(get_path('purchases.csv'), id, product, amount, price, expiration_date)
 
     row = None              # UnboundLocalError: local variable 'row' referenced before assignment
-    product_in_csv = False  # ter vervanging van != row['product'] omdat als de row['product'] wel gelijk is, maar row['expiration_date'] alsnog anders kan zijn
-                            # en er misschien nog meer mogelijkheden zijn waar ik nu niet aan heb gedacht. Anders teveel if, elif, elif, elif
+    product_in_csv = False  # ter vervanging van if / else nadat de row = None erbij kwam kreeg ik weer gekke resultaten en hierdoor niet meer
 
     with open(path, mode= 'r') as file:
         csv_reader = csv.DictReader(file)
@@ -123,7 +108,7 @@ def buy(product, amount, price, expiration_date):
                 append_new_lines(path, new_row['id'], new_row['product'], new_row['amount'], new_row['price'], new_row['expiration_date'])
                 product_in_csv = True
 
-        if product_in_csv is False:
+        if product_in_csv is False: # generieke oplossing voor if/elif/elif/elif...
             append_new_lines(path, id, product, amount, price, expiration_date)
 
         else:
@@ -131,11 +116,21 @@ def buy(product, amount, price, expiration_date):
                 append_new_lines(path, id, product, amount, price, expiration_date)                
              
 
+'''
+VERKOOP & VOORRAAD ONDERDEEL
+'''
 
-#buy('Koek', 1, 2, '2023-10-13')
-#buy('Koek', 1, 2, '2023-10-23')
-#buy('Koek', 1, 2, '2023-10-22')
-#buy('Koek', 1, 2, '2023-10-22')
+# Voor hoeveel is elk type product verkocht?
+def sales_information(filename):
+    with open(get_path(filename), mode= 'r') as csv_file:
+        csv_reader = csv.DictReader(csv_file)  
+        
+        for row in csv_reader:
+            product = row['product']
+            price = float(row['price'])
+            amount = float(row['amount'])
+            total_sales_price = amount * price
+            print(f'This {product} was sold for {price} euro and the total of {amount} pieces was sold for {total_sales_price} euro\'s')
 
 
 # ALS ER EEN PRODUCT WORDT VERKOCHT: SCHRIJVEN NAAR VERKOOP BESTAND EN VOORRAAD BESTAND
@@ -181,6 +176,9 @@ def sell(product, amount, price, expiration_date):
 #sell('Koek', 2, 2, '2023-10-13')
 #sell('Snoep', 1, 2, '2023-10-18') #snoep is sold out
 
+'''
+VOORRAAD ONDERDEEL
+'''
 
 # VOORRAAD AANVRAAG VOOR 1 SPECIFIEK PRODUCT
 def current_stock(product):
@@ -217,9 +215,13 @@ def total_in_stock(filename):
 
 # total_in_stock('current_stock.csv')
 
+'''
+DERVING ONDERDEEL
+'''
+
 # VAN WELKE PRODUCTEN OP VOORRAAD IS DE HOUDBAARHEIDSDATUM VERSTREKEN?
 def spoiled_products(): 
-    expiration_date_expired()
+    expiration_date_expired() # helper functie 
     
     with open(get_path('expiration_date_expired.csv'), mode= 'r') as csv_file:
         csv_reader = csv.DictReader(csv_file)
@@ -231,6 +233,10 @@ def spoiled_products():
 
 
 # spoiled_products()
+
+'''
+FINANCIEEL ONDERDEEL
+'''
 
 # RAPPORTAGE VAN DE OMZET OVER GESPECIFICEERDE TIJDSPERIODEN (omzet: verkoopprijs * aantal)
 def revenue(start_date, end_date):
@@ -282,7 +288,9 @@ def profit(start_date, end_date):
 
 
 # profit('2023-01-01', '2023-08-12')
-
+'''
+SUPERPY PARSER
+'''
 # Superpy command line tool: werken met Parser en subparsers
 
 # FOLDER AANMAKEN "directory"
@@ -298,6 +306,7 @@ def profit(start_date, end_date):
 
 # RAPPORTAGE VAN DE OMZET OVER GESPECIFICEERDE TIJDSPERIODEN "revenue"
 # RAPPORTAGE VAN DE WINST OVER GESPECIFICEERDE TIJDSPERIODEN "profit"
+
 
 def main(command_line=None):
     parser = argparse.ArgumentParser(description='Superpy command line tool for for supermarket data')
