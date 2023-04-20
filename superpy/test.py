@@ -6,6 +6,25 @@ from rich.console import Console
 import pandas as pd
 from csv2pdf import convert
 
+
+def inventory_csv_to_pdf(filename): # we start by removing duplicates using pandas
+    search_in_file = pd.read_csv(filename)
+    search_in_file.drop_duplicates(inplace=True)
+    search_in_file.to_csv(filename, index=False)
+    
+    return convert(filename, 'inventory.pdf') # daarna kunnen we csv2pdf import convert gebruiken
+
+
+inventory_csv_to_pdf('inventory.csv')
+
+
+
+
+
+
+
+
+
 def drop_line(product, expiration_date):
     path = get_path('current_stock.csv')
     with open(path, mode= 'r') as file:
