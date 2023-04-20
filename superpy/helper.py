@@ -5,23 +5,24 @@ from datetime import datetime, timedelta
 
 # Hier staat de (generieke)code om csv bestanden aan te maken en te bewerken
 
-# Setting up a working directory: option to create a folder, absolute paths and checking on files
+'''
+SETUP HELPER
+'''
+
+# Setting up a working directory: option to create a folder, absolute paths and checking on files 
+# create_working_directory('superpy')
+
 def create_working_directory(foldername): # set up folder where csv files are stored
     directory = os.path.join(os.getcwd(), foldername)
     return os.mkdir(directory)
 
 
-# create_working_directory('test')
-# create_working_directory('superpy')
-
 def get_path(filename): # function helper
     path = os.path.abspath(os.path.join(os.getcwd(), filename))
     return path
 
-#print(get_path('current_stock.csv'))
 
-
-# CHECK DOCUMENT and WRITE HEADER
+# Check document and write header
 def check_document(filename):
     path = get_path(filename)
     check_file = os.path.isfile(os.path.join(path))
@@ -36,20 +37,15 @@ def check_document(filename):
             return header
 
 
-#check_document('current_stock.csv')
-#check_document('purchases.csv')
-#check_document('sales.csv')
-
-# WORKING WITH TIME MODULES
+'''
+WORKING WITH TIME MODULES
+'''
 
 def reset_today(): # datum terugzetten naar kalender datum
     path = get_path('time.csv') 
     today = datetime.today().strftime('%Y-%m-%d')
     with open(path, mode= 'w') as file:
         file.write(str(today))
-
-
-#reset_today()
 
 
 def get_today():  # uitlezen welke datum is opgeslagen 
@@ -60,15 +56,11 @@ def get_today():  # uitlezen welke datum is opgeslagen
             return date[0]
 
 
-#print(get_today())
-
 def get_today_object():  #tussenstap is nodig om herhaling van code te voorkomen in advance_time en backward_time, van string naar object voor timedelta (TypeError)
     today = get_today() 
     today_object = datetime.strptime(today, '%Y-%m-%d').date()
     return today_object
 
-
-#print(get_today_object())
 
 def advance_time(number): # datum vooruit zetten  
     days = timedelta(days= number)
@@ -76,10 +68,6 @@ def advance_time(number): # datum vooruit zetten
     path = get_path('time.csv') 
     with open(path, mode= 'w') as file:
         file.write(str(set_date))
-
-
-#advance_time(2)
-#print(get_today())
 
 
 def backward_time(number): # datum achteruit zetten
@@ -90,12 +78,11 @@ def backward_time(number): # datum achteruit zetten
         file.write(str(set_date))
 
 
-#backward_time(2)
-#print(get_today())
+'''
+MAIN.PY FUNCTION HELPERS
+'''
 
-
-# WRITING A LINE TO A DOCUMENT
-def append_new_lines(filename, id, product, amount, price, expiration_date):
+def append_new_lines(filename, id, product, amount, price, expiration_date): # Writing a line to a document
     check_document(filename)
 
     with open(get_path(filename), mode= 'a', newline='') as file:
@@ -104,12 +91,7 @@ def append_new_lines(filename, id, product, amount, price, expiration_date):
         writer.writerow([id, mutation_date, product.lower(), amount, price, expiration_date])
 
 
-#append_new_lines('test.csv', 'id', 'Plum', 4, 2, '2023-10-19')  # nakijken of het werkt
-#append_new_lines('purchases.csv', 'id', 'plantje', 10, 2, '2023-10-18')  # nakijken of het werkt
-
-
-# DELETING A LINE FROM THE DOCUMENT
-def delete_line(filename, product):
+def delete_line(filename, product): # Deleting a line from a document
     product = product.lower()
     with open(get_path(filename), mode= 'r') as read_file:
         csv_reader = csv.reader(read_file)
@@ -124,9 +106,6 @@ def delete_line(filename, product):
         writer = csv.writer(writeFile)
         return writer.writerows(list_of_csv)
 
-
-#delete_line('purchases.csv', 'plantje')
-# delete_line('sales.csv', 'Snoep')
 
 # Helper functie voor buy and sell functie (target: product & expiration_date)
 def drop_line(filename, product, expiration_date):
