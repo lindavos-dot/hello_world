@@ -41,14 +41,18 @@ positional arguments:
 -    reset_today          Reset the internal date to calendar date
 -    advance_time         Moves the internal date forward by the desired number of days
 -    backward_time        Moves the internal date backwards by the desired number of days
--    inventory            Shows the current stock of the supermarket using rich
+
+-    new_product          Adds a new product to the assortment
+-    inventory            Shows the assortiment of the supermarket using rich
 -    inventory_csv_to_pdf Converts inventory.csv to inventory.pdf
+
 -    purchases            Shows the purchases of the supermarket
 -    sales                Shows the sales of the supermarket
 -    lack                 Shows the shrinkage of the supermarket
 -    stock                Shows the stock of the supermarket
 -    buy                  Add new purchase to current stock file and purchases file
 -    sell                 Remove stock from the current stock file and adds new sales to sales file
+
 -    revenue              Shows the revenue of the supermarket. Please enter dates in the following format: yyyy-mm-dd
 -    profit               Shows the profit of the supermarket. Please enter dates in the following format: yyyy-mm-dd
 
@@ -56,6 +60,7 @@ options:
   -h, --help            show this help message and exit
 
 ## working with time
+
 The command "reset_today" resets the internal date to the calendar date. "reset_today" does not take positional arguments.
 
 superpy>main.py reset_today
@@ -64,17 +69,21 @@ The command "today" shows internal date. "today" does not take positional argume
 
 superpy>main.py today
 
-The command "advance_time" shows internal date plus the days you entered. It take one positional argument: an integer. For example if you want to add two days to today:
+The command "advance_time" shows internal date plus the days you entered. It takes one positional argument: an integer. For example if you want to add two days to today:
 
 superpy>main.py advance_time 2
 
-The command "backward_time" shows internal date minus the days you entered. It take one positional argument: an integer. For example, if you want to subtract two days from today:
+The command "backward_time" shows internal date minus the days you entered. It takes one positional argument: an integer. For example, if you want to subtract two days from today:
 
 superpy>main.py backward_time 2
 
 ## Inventory management
 
-The command "inventory" Shows the current stock of the supermarket using rich. "inventory" does not take positional arguments.
+The command "new_product" Adds a new product to the assortment. "new_product" takes one positional argument.
+
+superpy>main.py new_product 'Banaan'
+
+The command "inventory" Shows the assortiment of the supermarket using rich. "inventory" does not take positional arguments.
 
 superpy>main.py inventory
 

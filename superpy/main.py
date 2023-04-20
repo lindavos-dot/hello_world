@@ -16,11 +16,12 @@ __human_name__ = "superpy"
 '''
 ASSORTIMENT ONDERDEEL
 '''
+# Informatie over assortiment (dus niet informatie over welke producten van het assortiment op voorraad is)
+# Producten toevoegen en verwijderen uit voorraad zie buy() & sell() functies
+
 
 # Welke producten biedt de supermarkt aan? 
-# Informatie over assortiment (dus niet informatie over welke producten van het assortiment op voorraad is)
-
-def add_inventory(filename, product): # opstellen en toevoegen producten aan assortiment (producten toevoegen en verwijderen uit voorraad zie buy() & sell())
+def add_inventory(filename, product): # opstellen en toevoegen producten aan assortiment 
     check_document(filename)
     id = 'id'
     product = product.lower()
@@ -54,11 +55,10 @@ def inventory_csv_to_pdf(filename): # we start by removing duplicates using pand
     return convert(filename, 'inventory.pdf') # daarna kunnen we csv2pdf import convert gebruiken
 
 
-#inventory_csv_to_pdf('inventory.csv') # laat zien wat het assortiment is in PDF
-
 '''
 INKOOP & VOORRAAD ONDERDEEL
 '''
+
 
 # Voor hoeveel is elk type product ingekocht en wat is de vervaldatum?
 def purchase_information(filename):
@@ -75,11 +75,8 @@ def purchase_information(filename):
             print(f'and in addition, this {product} is best before {date}')
 
 
-#purchase_information('purchases.csv')
-
 # Hoeveel van elk type product (in assortiment) heeft de supermarkt nu op voorraad?
 # De buy functie schrijft naar 2 csv bestanden: ingekochte producten gaan naar het inkoopbestand. Daarnaast wordt de voorraad bijgewerkt in het voorraadbestand
-
 def buy(product, amount, price, expiration_date):
     product = product.lower()
     path = get_path('current_stock.csv')
@@ -133,7 +130,6 @@ def sales_information(filename):
             print(f'This {product} was sold for {price} euro and the total of {amount} pieces was sold for {total_sales_price} euro\'s')
 
 
-# ALS ER EEN PRODUCT WORDT VERKOCHT: SCHRIJVEN NAAR VERKOOP BESTAND EN VOORRAAD BESTAND
 # De sell functie schrijft naar 2 csv bestanden: verkochte producten gaan naar het verkoopbestand. Daarnaast wordt de voorraad bijgewerkt in het voorraadbestand
 def sell(product, amount, price, expiration_date):
     product = product.lower()      
@@ -171,18 +167,13 @@ def sell(product, amount, price, expiration_date):
                 print(f'{product} is sold out')          
 
 
-
-
-#sell('Koek', 2, 2, '2023-10-13')
-#sell('Snoep', 1, 2, '2023-10-18') #snoep is sold out
-
 '''
 VOORRAAD ONDERDEEL
 '''
 
-# VOORRAAD AANVRAAG VOOR 1 SPECIFIEK PRODUCT
+# Voorraad aanvraag voor 1 specifiek product
 def current_stock(product):
-    expiration_date_expired() # als het goed is staat er nu alleen data in de lijst die niet over datum is    
+    expiration_date_expired() # over datum producten verwijderen   
     
     with open(get_path('current_stock.csv'), mode= 'r') as csv_file:
         csv_reader = csv.DictReader(csv_file)
@@ -196,12 +187,9 @@ def current_stock(product):
                 print(f'{product} is sold out')
 
 
-# current_stock('Apple')
-# current_stock('Pear')
-
-# VOORRAAD AANVRAAG VOOR ALLE PRODUCTEN IN STOCK
+# Voorraad aanvraag voor alle producten in stock
 def total_in_stock(filename): 
-    expiration_date_expired()
+    expiration_date_expired() # over datum producten verwijderen 
     
     with open(get_path(filename), mode= 'r') as csv_file:
         csv_reader = csv.DictReader(csv_file)
@@ -213,15 +201,13 @@ def total_in_stock(filename):
             print(f'We currently have a total of {amount} {product} in stock and these will be expired by {date}')
 
 
-# total_in_stock('current_stock.csv')
-
 '''
 DERVING ONDERDEEL
 '''
 
-# VAN WELKE PRODUCTEN OP VOORRAAD IS DE HOUDBAARHEIDSDATUM VERSTREKEN?
+# Van welke producten in de houdbaarheidsdatum verstreken?
 def spoiled_products(): 
-    expiration_date_expired() # helper functie 
+    expiration_date_expired() # over datum producten verwijderen 
     
     with open(get_path('expiration_date_expired.csv'), mode= 'r') as csv_file:
         csv_reader = csv.DictReader(csv_file)
@@ -232,13 +218,11 @@ def spoiled_products():
             print(f'Of this {product} , a total of {amount} have expired')
 
 
-# spoiled_products()
-
 '''
 FINANCIEEL ONDERDEEL
 '''
 
-# RAPPORTAGE VAN DE OMZET OVER GESPECIFICEERDE TIJDSPERIODEN (omzet: verkoopprijs * aantal)
+# Rapportage van de omzet over gespecificeerde tijdsperioden (omzet: verkoopprijs * aantal)
 def revenue(start_date, end_date):
     with open(get_path('sales.csv'), mode= 'r') as csv_file:
         csv_reader = csv.DictReader(csv_file)  
@@ -255,10 +239,7 @@ def revenue(start_date, end_date):
                     file.write(str(total_revenue))
     
 
-# revenue('2023-01-01', '2023-08-12')
-# revenue('2023-01-01', '2023-02-28')
-
-# RAPPORTAGE VAN DE WINST OVER GESPECIFICEERDE TIJDSPERIODEN (winst in deze situatie: verkoopprijs - inkoopprijs)
+# Rapportage van de winst over gespecificeerde tijdsperioden (winst in deze situatie: verkoopprijs - inkoopprijs)
 def profit(start_date, end_date):
     with open(get_path('sales.csv'), mode= 'r') as csv_file:
         csv_reader = csv.DictReader(csv_file)  
@@ -287,16 +268,19 @@ def profit(start_date, end_date):
         file.write(str(profit))
 
 
-# profit('2023-01-01', '2023-08-12')
 '''
 SUPERPY PARSER
 '''
+
 # Superpy command line tool: werken met Parser en subparsers
 
 # FOLDER AANMAKEN "directory"
 # WERKEN MET TIJD "reset_today", "today", "advance_time", "backward_time"
+
+# NIEUWE PRODUCTEN AAN ASSORTIMENT TOEVOEGEN "new_products"  
 # WELKE PRODUCTEN BIEDT DE SUPERMARKT AAN? "inventory" 
 # WELKE PRODUCTEN BIEDT DE SUPERMARKT AAN? "inventory_csv_to_pdf"
+
 # INKOOP REGISTREREN IN INKOOP- EN VOORRAADLIJST "buy"
 # VERKOOP REGISTEREN IN VERKOOP- EN VOORRAADLIJST "sell"
 # VOOR HOEVEEL IS ELK TYPE PRODUCT GEKOCHT EN WAT IS DE VERVALDATUM? "purchases"
@@ -328,6 +312,10 @@ def main(command_line=None):
     # subparser "backward_time"
     get_backward_time = subparsers.add_parser('backward_time', help= 'show today\'s date minus the days you entered')
     get_backward_time.add_argument('number', type= int, help= 'Please enter the number of days you want to subtract from today\'s date')
+
+    # Subparser "new_product"
+    add_new_product = subparsers.add_parser('new_product', help= 'add a new product to the assortment')
+    add_new_product.add_argument('product', help= 'Please enter the name of the new product to add to the assortment')
 
     # Subparser "inventory"
     get_inventory = subparsers.add_parser('inventory', help= 'Shows the inventory of the supermarket using rich')
@@ -388,6 +376,9 @@ def main(command_line=None):
 
     elif args.command == 'backward_time':     # python main.py backward_time 2
         backward_time(args.number)
+
+    elif args.command == 'new_product':     # python main.py new_product 'Banaan'
+        add_inventory('inventory.csv', args.product)
 
     elif args.command == 'inventory':     # python main.py inventory
         inventory('inventory.csv')

@@ -22,8 +22,7 @@ def get_path(filename): # function helper
     return path
 
 
-# Check document and write header
-def check_document(filename):
+def check_document(filename): # Check document and write header
     path = get_path(filename)
     check_file = os.path.isfile(os.path.join(path))
 
@@ -107,15 +106,14 @@ def delete_line(filename, product): # Deleting a line from a document
         return writer.writerows(list_of_csv)
 
 
-# Helper functie voor buy and sell functie (target: product & expiration_date)
-def drop_line(filename, product, expiration_date):
+def drop_line(filename, product, expiration_date): # Helper functie voor buy and sell functie 
 
     with open(get_path(filename), mode= 'r') as file:
         csv_reader = csv.DictReader(file)
         lists = list(csv_reader)
 
         for row in lists:
-            if row['product'] == product and row['expiration_date'] == expiration_date:
+            if row['product'] == product and row['expiration_date'] == expiration_date: # (target: product & expiration_date)
                 lists.remove(row)
 
     header = ['id','mutation_date','product','amount','price','expiration_date']       
@@ -125,8 +123,7 @@ def drop_line(filename, product, expiration_date):
         writer.writerows(lists) 
 
 
-# LATEN ZIEN DAT EEN PRODUCT NIET IS VERKOCHT, MAAR DE HOUDBAARHEIDSDATUM IS VERSTREKEN
-def expiration_date_expired():
+def expiration_date_expired(): # Laat zien dat een product niet is verkocht, maar de houdbaarheidsdatum is verstreken
     check_document('expiration_date_expired.csv')
     check_document('current_stock.csv')
     
@@ -160,5 +157,3 @@ def expiration_date_expired():
             return writer.writerow(data)  
 
 
-#append_new_lines('current_stock.csv', 'id', 'Banana', 4, 2, '2022-10-19')  # toevoegen over datum appels
-#expiration_date_expired()
