@@ -39,21 +39,20 @@ def buy(product, amount, price, expiration_date):
     
     #append_new_lines(get_path('purchases.csv'), id, product, amount, price, expiration_date)
 
-    row = None
-    product_in_csv = False # toegevoegd ter vervanging van != row['product'] omdat als de row['product'] wel gelijk is, maar row['expiration_date'] alsnog anders kan zijn
-    # en er nog meer mogelijkheden zijn waar ik nu niet aan heb gedacht
+    row = None              # UnboundLocalError: local variable 'row' referenced before assignment
+    product_in_csv = False  # ter vervanging van != row['product'] omdat als de row['product'] wel gelijk is, maar row['expiration_date'] alsnog anders kan zijn
+                            # en er misschien nog meer mogelijkheden zijn waar ik nu niet aan heb gedacht. Anders teveel if, elif, elif, elif
 
     with open(path, mode= 'r') as file:
         csv_reader = csv.DictReader(file)
 
         for row in csv_reader:
-            #print(row['product'])
             if row['product'] == product and row['expiration_date'] == expiration_date:
                                
                 old_row = row
                 new_row = row
 
-                delete_line(path, old_row['product'])
+                drop_line(old_row['product'], old_row['expiration_date'])
                 current_amount = new_row['amount']               
                 new_amount = int(current_amount) + int(amount)
                 new_row['amount'] = new_amount
@@ -66,12 +65,11 @@ def buy(product, amount, price, expiration_date):
 
         else:
             if row is None:
-                #print("d")
                 append_new_lines(path, id, product, amount, price, expiration_date)                
              
 
 
-#buy('Koek', 1, 2, '2023-10-24')
+#buy('Koek', 1, 2, '2023-10-13')
 #buy('Koek', 1, 2, '2023-10-23')
 #buy('Koek', 1, 2, '2023-10-22')
 

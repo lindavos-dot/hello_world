@@ -128,6 +128,23 @@ def delete_line(filename, product):
 #delete_line('purchases.csv', 'plantje')
 # delete_line('sales.csv', 'Snoep')
 
+# Helper functie voor buy and sell functie (target: product & expiration_date)
+def drop_line(filename, product, expiration_date):
+
+    with open(get_path(filename), mode= 'r') as file:
+        csv_reader = csv.DictReader(file)
+        lists = list(csv_reader)
+
+        for row in lists:
+            if row['product'] == product and row['expiration_date'] == expiration_date:
+                lists.remove(row)
+
+    header = ['id','mutation_date','product','amount','price','expiration_date']       
+    with open(get_path(filename), mode= 'w', newline= '') as csvfile:
+        writer = csv.DictWriter(csvfile, fieldnames=header)
+        writer.writeheader() 
+        writer.writerows(lists) 
+
 
 # LATEN ZIEN DAT EEN PRODUCT NIET IS VERKOCHT, MAAR DE HOUDBAARHEIDSDATUM IS VERSTREKEN
 def expiration_date_expired():
