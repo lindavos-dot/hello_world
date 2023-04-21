@@ -107,7 +107,6 @@ def delete_line(filename, product): # Deleting a line from a document
 
 
 def drop_line(filename, product, expiration_date): # Helper functie voor buy and sell functie 
-
     with open(get_path(filename), mode= 'r') as file:
         csv_reader = csv.DictReader(file)
         lists = list(csv_reader)
@@ -132,7 +131,7 @@ def expiration_date_expired(): # Laat zien dat een product niet is verkocht, maa
         list_of_csv = list(csv_reader)
         expired_products = []
         
-        date_today = reset_today()
+        date_today = datetime.today().strftime('%Y-%m-%d')
         for row in list_of_csv:
             date = row['expiration_date']
             if date <= str(date_today):
@@ -151,9 +150,9 @@ def expiration_date_expired(): # Laat zien dat een product niet is verkocht, maa
     header = ['id','mutation_date','product','amount','price','expiration_date']   
     with open(get_path('expiration_date_expired.csv'), mode= 'a', newline='') as csvfile:
         writer = csv.DictWriter(csvfile, fieldnames=header)
-        # writer.writeheader() 
+        # writer.writeheader()
+        check_document('expiration_date_expired.csv') 
         
         for data in expired_products:
             return writer.writerow(data)  
-
 

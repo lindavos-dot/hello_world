@@ -105,7 +105,7 @@ def buy(product, amount, price, expiration_date):
                 append_new_lines(path, new_row['id'], new_row['product'], new_row['amount'], new_row['price'], new_row['expiration_date'])
                 product_in_csv = True
 
-        if product_in_csv is False: # generieke oplossing voor if/elif/elif/elif...
+        if product_in_csv is False: # generieke oplossing voor if/elif/elif/elif... else heeft als resultaat dat een product meerdere keren wordt toegevoegd
             append_new_lines(path, id, product, amount, price, expiration_date)
 
         else:
@@ -215,7 +215,7 @@ def spoiled_products():
         for row in csv_reader:
             product = row['product']
             amount = row['amount']
-            print(f'Of this {product} , a total of {amount} have expired')
+            print(f'Of this {product}, a total of {amount} have expired')
 
 
 '''
@@ -411,7 +411,7 @@ def main(command_line=None):
         profit(args.start_date, args.end_date)
 
     else:
-        print('Command not recognized (choose from \'directory\', \'today\', \'reset_today\',\'advance_time\', \'backward_time\', \'inventory\', \'inventory_csv_to_pdf\', \'purchases\', \'sales\', \'lack\', \'stock\', \'buy\', \'sell\',\'revenue\', \'profit\')')
+        print('Command not recognized (choose from \'directory\', \'today\', \'reset_today\',\'advance_time\', \'backward_time\', new_product\', \'inventory\', \'inventory_csv_to_pdf\', \'purchases\', \'sales\', \'lack\', \'stock\', \'buy\', \'sell\',\'revenue\', \'profit\')')
 
 
 
