@@ -76,7 +76,9 @@ def purchase_information(filename):
 
 
 # Hoeveel van elk type product (in assortiment) heeft de supermarkt nu op voorraad?
-# De buy functie schrijft naar 2 csv bestanden: ingekochte producten gaan naar het inkoopbestand. Daarnaast wordt de voorraad bijgewerkt in het voorraadbestand
+# De buy functie schrijft naar 2 csv bestanden: ingekochte producten gaan naar het inkoopbestand: purchases.csv. 
+# Daarnaast wordt de voorraad bijgewerkt in het voorraadbestand: current_stock.csv
+
 def buy(product, amount, price, expiration_date):
     product = product.lower()
     path = get_path('current_stock.csv')
@@ -130,7 +132,9 @@ def sales_information(filename):
             print(f'This {product} was sold for {price} euro and the total of {amount} pieces was sold for {total_sales_price} euro\'s')
 
 
-# De sell functie schrijft naar 2 csv bestanden: verkochte producten gaan naar het verkoopbestand. Daarnaast wordt de voorraad bijgewerkt in het voorraadbestand
+# De sell functie schrijft naar 2 csv bestanden: verkochte producten gaan naar het verkoopbestand: sales.csv. 
+# Daarnaast wordt de voorraad bijgewerkt in het voorraadbestand: current_stock.csv
+
 def sell(product, amount, price, expiration_date):
     product = product.lower()      
     path = get_path('current_stock.csv')
